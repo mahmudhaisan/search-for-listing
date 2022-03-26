@@ -24,6 +24,19 @@ if (!defined('ABSPATH')) {
 function search15()
 {
 
+    // $args = array(
+    //     'post_type' => 'job_listing',
+    // );
+    // $query = new WP_Query($args);
+    // var_dump(get_the_ID());
+    // while ($query->posts()) {
+    //     $query->the_post();
+    //     var_dump($query);
+    // }
+
+
+
+
 
 ?>
 
@@ -74,13 +87,25 @@ function searchResult()
             "s" => $search
         );
         $query = get_posts($args);
+
+
         if ($query == array()) {
             echo 'No result found';
         }
 
-
         foreach ($query as $q) {
 
+            if (has_post_thumbnail()) {
+                the_post_thumbnail();
+            }
+            // get cpost types custom field keys
+            $meta1 = get_post_custom_keys($q->ID);
+            $imgArray = get_post_meta($q->ID, '_job_cover', true);
+            $defaultImg = 'https://cdn.searchenginejournal.com/wp-content/uploads/2019/08/c573bf41-6a7c-4927-845c-4ca0260aad6b-1520x800.jpeg';
+            $postImg = $imgArray[0];
+            echo '<pre>';
+            print_r($postImg);
+            echo '</pre>';
 
     ?>
 
@@ -91,7 +116,14 @@ function searchResult()
                         <div class="row">
 
                             <div class="col-md-5 cta-contents">
-                                <img class="w-100 h-100" src="https://cdn.searchenginejournal.com/wp-content/uploads/2019/08/c573bf41-6a7c-4927-845c-4ca0260aad6b-1520x800.jpeg" alt="">
+                                <img class="w-100 h-100" src="
+                               
+                               <?php
+                                if (!empty($postImg)) {
+                                    echo $postImg;
+                                } else {
+                                    echo $defaultImg;
+                                } ?>" alt="">
                             </div>
 
                             <div class="col-md-5 cta-contents">
@@ -187,3 +219,22 @@ function search493_enqueue()
 
 
 add_action('wp_enqueue_scripts', 'search493_enqueue');
+
+
+
+function meta493()
+{
+
+    $args = array(
+        'post_type' => 'job_listing',
+
+    );
+
+    $query = new WP_Query($args);
+
+    echo '<pre>';
+    print_r($query);
+    echo '</pre>';
+}
+
+add_shortcode('meta', 'meta493');
