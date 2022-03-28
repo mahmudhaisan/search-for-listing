@@ -34,13 +34,12 @@ function search15()
     //     var_dump($query);
     // }
 
-
+    $array = wc_get_account_menu_items();
+    var_dump($array);
 
 
 
 ?>
-
-
     <div class="row">
         <div class="col-md-5 col-md-offset-1">
             <div class="content">
@@ -62,11 +61,6 @@ function search15()
         </div>
     </div>
 
-
-
-
-
-
     <?php }
 
 
@@ -74,20 +68,16 @@ function search15()
 add_shortcode('search', 'search15');
 
 
-
 function searchResult()
 {
-
     if (isset($_GET['search']) && !empty($_GET['search'])) {
-
         $search = $_GET['search'];
-
         $args = array(
             "post_type" => "job_listing",
             "s" => $search
         );
-        $query = get_posts($args);
 
+        $query = get_posts($args);
 
         if ($query == array()) {
             echo 'No result found';
@@ -98,36 +88,48 @@ function searchResult()
             if (has_post_thumbnail()) {
                 the_post_thumbnail();
             }
+
             // get cpost types custom field keys
-            $meta1 = get_post_custom_keys($q->ID);
+            // $meta1 = get_post_custom_keys($q->ID);
+
             $imgArray = get_post_meta($q->ID, '_job_cover', true);
+            $meta = get_post_meta($q->ID);
+            $link = get_permalink($q->ID);
             $defaultImg = 'https://cdn.searchenginejournal.com/wp-content/uploads/2019/08/c573bf41-6a7c-4927-845c-4ca0260aad6b-1520x800.jpeg';
             $postImg = $imgArray[0];
-            echo '<pre>';
-            print_r($postImg);
-            echo '</pre>';
 
+            $reviewCount = $meta['_case27_review_count'][0];
+            $averageRating = $meta['_case27_average_rating'][0] / 2;
+
+            // echo $averageRating;
+            // echo $reviewCount;
+            // echo '<pre>';
+            // print_r($meta);
+            // echo '</pre>';
+
+
+            // print_r($meta['_case27_review_count'][0]);
+            // print_r($meta['_case27_average_rating'][0]);
+            // echo '</pre>';
     ?>
 
             <div class="container">
                 <div class="col-sm-12">
-
                     <div class="bs-calltoaction bs-calltoaction-default">
                         <div class="row">
-
                             <div class="col-md-5 cta-contents">
-                                <img class="w-100 h-100" src="
-                               
-                               <?php
-                                if (!empty($postImg)) {
-                                    echo $postImg;
-                                } else {
-                                    echo $defaultImg;
-                                } ?>" alt="">
+                                <img class="wh" src="<?php
+                                                        if (!empty($postImg)) {
+                                                            echo $postImg;
+                                                        } else {
+                                                            echo $defaultImg;
+                                                        } ?>" alt="">
                             </div>
 
                             <div class="col-md-5 cta-contents">
-                                <h1 class="cta-title"><?php echo $q->post_title; ?></h1>
+                                <h1 class="cta-title">
+                                    <a href="<?php echo $link; ?>"> <?php echo $q->post_title; ?> </a>
+                                </h1>
                                 <div class="cta-desc">
                                     <p><?php echo $q->post_content; ?></p>
                                     <br>
@@ -135,13 +137,33 @@ function searchResult()
 
                                 <div class="cta-desc">
                                     <div>
-                                        <span class="fa fa-star checked"></span>
-                                        <span class="fa fa-star checked"></span>
-                                        <span class="fa fa-star checked"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="p-1"> 602 Reviews </span>
+                                        <?php
+                                        require_once(plugin_dir_path(__FILE__) . 'includes/reviews.php');
+
+                                        if ($reviewCount == 0) {
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                        }
+
+
+
+                                        ?>
+                                        <span class="p-1">
+                                            <?php
+                                            if ($reviewCount > 0) {
+                                                echo $reviewCount . ' Reviews found';
+                                            } else {
+                                                echo 'Not Rated Yet';
+                                            }
+
+                                            ?>
+
+                                        </span>
                                     </div>
+
                                     <div class="mt-5">
                                         <ul class="social-network social-circle">
                                             <li><a href="#" class="icoRss"><i class="fa fa-heart"></i></a></li>
@@ -150,6 +172,7 @@ function searchResult()
                                             <li><a href="#" class="icoRss"><i class="fa fa-share"></i></a></li>
                                         </ul>
                                     </div>
+
                                 </div>
                             </div>
 
@@ -160,11 +183,7 @@ function searchResult()
                     </div>
                 </div>
             </div>
-
-
-
 <?php
-
         }
         // echo '<pre>';
         // $array = json_decode(json_encode($q), true);
@@ -182,27 +201,10 @@ function searchResult()
     }
 }
 
-
-
-
 add_shortcode('results', 'searchResult');
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 //enqueue files
-
-
 function search493_enqueue()
 {
     $enq = plugin_dir_url(__FILE__) . 'assets/';
@@ -222,19 +224,10 @@ add_action('wp_enqueue_scripts', 'search493_enqueue');
 
 
 
-function meta493()
+
+
+add_action('woocommerce_account_navigation', 'action_function_name_6058');
+function action_function_name_6058()
 {
-
-    $args = array(
-        'post_type' => 'job_listing',
-
-    );
-
-    $query = new WP_Query($args);
-
-    echo '<pre>';
-    print_r($query);
-    echo '</pre>';
+    echo '<a href="#">Hello </a>';
 }
-
-add_shortcode('meta', 'meta493');

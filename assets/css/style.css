@@ -199,3 +199,18 @@ a.socialIcon:hover, .socialHoverClass {
  background-color: #ffffff;   
  border: 1px solid black;
 } 
+
+
+
+img.wh {
+    width: 100%;
+    height: 300px;
+}
+
+.checked{
+    color: #eea236;
+}
+
+.not-checked{
+    color: rgb(194, 189, 189);
+}
