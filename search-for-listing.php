@@ -23,7 +23,6 @@ if (!defined('ABSPATH')) {
 
 function search15()
 {
-
     // $args = array(
     //     'post_type' => 'job_listing',
     // );
@@ -36,7 +35,6 @@ function search15()
 
     $array = wc_get_account_menu_items();
     var_dump($array);
-
 
 
 ?>
@@ -89,17 +87,25 @@ function searchResult()
                 the_post_thumbnail();
             }
 
+            $postTitle = $q->post_title;
+            $postTitleDash = strtolower(str_replace(' ', '-', $postTitle));
+            echo $postTitleDash;
+
             // get cpost types custom field keys
             // $meta1 = get_post_custom_keys($q->ID);
 
             $imgArray = get_post_meta($q->ID, '_job_cover', true);
             $meta = get_post_meta($q->ID);
             $link = get_permalink($q->ID);
+
+            // post Images
             $defaultImg = 'https://cdn.searchenginejournal.com/wp-content/uploads/2019/08/c573bf41-6a7c-4927-845c-4ca0260aad6b-1520x800.jpeg';
             $postImg = $imgArray[0];
 
+            //post ratings and reviews
             $reviewCount = $meta['_case27_review_count'][0];
             $averageRating = $meta['_case27_average_rating'][0] / 2;
+            echo $averageRating;
 
             // echo $averageRating;
             // echo $reviewCount;
@@ -138,7 +144,72 @@ function searchResult()
                                 <div class="cta-desc">
                                     <div>
                                         <?php
-                                        require_once(plugin_dir_path(__FILE__) . 'includes/reviews.php');
+
+
+                                        if ($averageRating == 1 && $averageRating <= 1.20) {
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                        }
+
+                                        if ($averageRating > 1.20 && $averageRating < 1.75) {
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fas fa-star-half-alt checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                        }
+                                        if ($averageRating >= 1.75 && $averageRating <= 2.20) {
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                        }
+                                        if ($averageRating > 2.20 && $averageRating < 2.75) {
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fas fa-star-half-alt checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                        }
+                                        if ($averageRating >= 2.75 && $averageRating <= 3.20) {
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                        }
+                                        if ($averageRating > 3.20 && $averageRating < 3.75) {
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fas fa-star-half-alt checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                        } elseif ($averageRating >= 3.75 && $averageRating <= 4.20) {
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star not-checked"></span>';
+                                        }
+                                        if ($averageRating > 4.20 && $averageRating < 4.75) {
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fas fa-star-half-alt checked"></span>';
+                                        }
+                                        if ($averageRating >= 4.75 && $averageRating <= 5) {
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                            echo '<span class="fa fa-star checked"></span>';
+                                        }
+
 
                                         if ($reviewCount == 0) {
                                             echo '<span class="fa fa-star not-checked"></span>';
@@ -147,8 +218,6 @@ function searchResult()
                                             echo '<span class="fa fa-star not-checked"></span>';
                                             echo '<span class="fa fa-star not-checked"></span>';
                                         }
-
-
 
                                         ?>
                                         <span class="p-1">
@@ -168,7 +237,7 @@ function searchResult()
                                         <ul class="social-network social-circle">
                                             <li><a href="#" class="icoRss"><i class="fa fa-heart"></i></a></li>
                                             <li><a href="#" class="icoRss"><i class="fa fa-thumbs-up"></i></a></li>
-                                            <li><a href="#" class="icoRss"><i class="fa fa-star"></i></a></li>
+                                            <li><a href="http://localhost:10003/listing/<?php echo $postTitleDash; ?>/#reviews" class="icoRss"><i class="fa fa-star"></i></a></li>
                                             <li><a href="#" class="icoRss"><i class="fa fa-share"></i></a></li>
                                         </ul>
                                     </div>
@@ -226,8 +295,68 @@ add_action('wp_enqueue_scripts', 'search493_enqueue');
 
 
 
-add_action('woocommerce_account_navigation', 'action_function_name_6058');
-function action_function_name_6058()
+
+
+
+// // woocommerce account page
+
+
+add_filter('woocommerce_account_menu_items', 'woo493_my_account_navs');
+function woo493_my_account_navs($menu_links)
 {
-    echo '<a href="#">Hello </a>';
+
+    $menu_links['my-listings'] = 'My Files';
+
+    unset($menu_links['dashboard']); // Remove Dashboard
+    // unset($menu_links['my-listings']); // Remove Payment Methods
+    unset($menu_links['promotions']); // Remove Payment Methods
+    unset($menu_links['my-bookmarks']); // Remove Payment Methods
+    unset($menu_links['orders']); // Remove Payment Methods
+    unset($menu_links['downloads']); // Remove Payment Methods
+    //print_r(($menu_links['my-listings'])); // Remove Orders
+    unset($menu_links['edit-account']); // Disable Downloads
+    unset($menu_links['edit-address']); // Remove Account details tab
+    unset($menu_links['customer-logout']); // Remove Logout link
+
+    return $menu_links;
+}
+
+
+
+/*
+ * Step 1. Add Link (Tab) to My Account menu
+ */
+add_filter('woocommerce_account_menu_items', 'woo493_add_links_account_page', 40);
+function woo493_add_links_account_page($menu_links)
+{
+
+    $menu_links = array_slice($menu_links, 0, 3, true)
+        + array('new-bookmarks' => 'bookmark')
+        + array_slice($menu_links, 3, NULL, true);
+
+    return $menu_links;
+}
+
+
+/*
+ * Step 2. Register Permalink Endpoint
+ */
+add_action('init', 'woo493_endpoints');
+function woo493_endpoints()
+{
+
+    // WP_Rewrite is my Achilles' heel, so please do not ask me for detailed explanation
+    add_rewrite_endpoint('new-bookmarks', EP_PAGES);
+}
+
+
+/*
+ * Step 3. Content for the new page in My Account, woocommerce_account_{ENDPOINT NAME}_endpoint
+ */
+add_action('woocommerce_account_new-bookmarks_endpoint', 'woo493_endpoint_contents');
+function woo493_endpoint_contents()
+{
+
+    // of course you can print dynamic content here, one of the most useful functions here is get_current_user_id()
+    echo 'Last time you logged in: yesterday from Safari.';
 }
