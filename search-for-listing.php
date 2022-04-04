@@ -20,61 +20,100 @@ if (!defined('ABSPATH')) {
     die;
 }
 
-
+// search fumctionality
 function search15()
 {
-    // $args = array(
-    //     'post_type' => 'job_listing',
-    // );
-    // $query = new WP_Query($args);
-    // var_dump(get_the_ID());
-    // while ($query->posts()) {
-    //     $query->the_post();
-    //     var_dump($query);
-    // }
-
-    $array = wc_get_account_menu_items();
-    var_dump($array);
-
 
 ?>
+    <section class="search-sec">
+        <div class="container">
+            <form action="/search" method="get">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                <input type="text" class="form-control" placeholder="Search" name="search" id="" value="<?php echo $_GET['search']; ?>">
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                <!-- options for search -->
+                                <select class="form-control search-slt" id="exampleFormControlSelect1">
+                                    <option>Select Vehicle</option>
+                                    <option>Example one</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                <!-- search submit button -->
+                                <button type="submit" class="btn btn-danger wrn-btn">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+
+
+    <!-- second search layout -->
     <div class="row">
-        <div class="col-md-5 col-md-offset-1">
+        <div class="col-md-12 ">
             <div class="content">
                 <div class="pull-middle">
                     <div class="panel panel-default">
-                        <div class="panel-body">
+                        <div class="">
                             <form action="/search" method="get">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search" name="search" id="" value="<?php echo $_GET['search']; ?>">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-success btn-circle" type="submit">Search</button>
-                                    </span>
-                                </div>
+
+                                <div class="">
+
+                                    <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                        <input type="text" class="form-control" placeholder="Search" name="search" id="" value="<?php echo $_GET['search']; ?>">
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-12 p-0">
+                                        <select class="form-control search-slt" id="exampleFormControlSelect1">
+                                            <option>Select Vehicle</option>
+                                            <option>Example one</option>
+                                            <option>Example one</option>
+                                            <option>Example one</option>
+                                            <option>Example one</option>
+                                            <option>Example one</option>
+                                            <option>Example one</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                        <button type="submit" class="btn btn-danger wrn-btn">Search</button>
+                                    </div>
                             </form>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 
     <?php }
 
 
-//add short code
+
+
+//add short code for search functionality
 add_shortcode('search', 'search15');
 
 
+
+//search page functionality
 function searchResult()
 {
+    //check if search term in search bar and not empty
     if (isset($_GET['search']) && !empty($_GET['search'])) {
         $search = $_GET['search'];
+        $selectTypes = $_GET["post-type-select"];
         $args = array(
             "post_type" => "job_listing",
             "s" => $search
         );
-
+        // posts query
         $query = get_posts($args);
 
         if ($query == array()) {
@@ -86,14 +125,13 @@ function searchResult()
             if (has_post_thumbnail()) {
                 the_post_thumbnail();
             }
+            // var_dump($q);
 
             $postTitle = $q->post_title;
             $postTitleDash = strtolower(str_replace(' ', '-', $postTitle));
             echo $postTitleDash;
 
-            // get cpost types custom field keys
-            // $meta1 = get_post_custom_keys($q->ID);
-
+            //get image array
             $imgArray = get_post_meta($q->ID, '_job_cover', true);
             $meta = get_post_meta($q->ID);
             $link = get_permalink($q->ID);
@@ -107,16 +145,6 @@ function searchResult()
             $averageRating = $meta['_case27_average_rating'][0] / 2;
             echo $averageRating;
 
-            // echo $averageRating;
-            // echo $reviewCount;
-            // echo '<pre>';
-            // print_r($meta);
-            // echo '</pre>';
-
-
-            // print_r($meta['_case27_review_count'][0]);
-            // print_r($meta['_case27_average_rating'][0]);
-            // echo '</pre>';
     ?>
 
             <div class="container">
@@ -124,19 +152,25 @@ function searchResult()
                     <div class="bs-calltoaction bs-calltoaction-default">
                         <div class="row">
                             <div class="col-md-5 cta-contents">
-                                <img class="wh" src="<?php
-                                                        if (!empty($postImg)) {
-                                                            echo $postImg;
-                                                        } else {
-                                                            echo $defaultImg;
-                                                        } ?>" alt="">
+                                <!-- show post image -->
+                                <img class="wh" src="
+                                <?php
+
+
+                                if (!empty($postImg)) {
+                                    echo $postImg;
+                                } else {
+                                    echo $defaultImg;
+                                } ?>" alt="">
                             </div>
 
                             <div class="col-md-5 cta-contents">
                                 <h1 class="cta-title">
+                                    <!-- post title -->
                                     <a href="<?php echo $link; ?>"> <?php echo $q->post_title; ?> </a>
                                 </h1>
                                 <div class="cta-desc">
+                                    <!-- post content -->
                                     <p><?php echo $q->post_content; ?></p>
                                     <br>
                                 </div>
@@ -146,6 +180,7 @@ function searchResult()
                                         <?php
 
 
+                                        // show available star ratings
                                         if ($averageRating == 1 && $averageRating <= 1.20) {
                                             echo '<span class="fa fa-star checked"></span>';
                                             echo '<span class="fa fa-star not-checked"></span>';
@@ -210,7 +245,6 @@ function searchResult()
                                             echo '<span class="fa fa-star checked"></span>';
                                         }
 
-
                                         if ($reviewCount == 0) {
                                             echo '<span class="fa fa-star not-checked"></span>';
                                             echo '<span class="fa fa-star not-checked"></span>';
@@ -222,6 +256,7 @@ function searchResult()
                                         ?>
                                         <span class="p-1">
                                             <?php
+
                                             if ($reviewCount > 0) {
                                                 echo $reviewCount . ' Reviews found';
                                             } else {
@@ -229,23 +264,19 @@ function searchResult()
                                             }
 
                                             ?>
-
                                         </span>
                                     </div>
 
-                                    <div class="mt-5">
-                                        <ul class="social-network social-circle">
-                                            <li><a href="#" class="icoRss"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#" class="icoRss"><i class="fa fa-thumbs-up"></i></a></li>
-                                            <li><a href="http://localhost:10003/listing/<?php echo $postTitleDash; ?>/#reviews" class="icoRss"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="#" class="icoRss"><i class="fa fa-share"></i></a></li>
-                                        </ul>
-                                    </div>
+                                    <?php
+                                    require(plugin_dir_path(__FILE__) . 'includes/bookmark.php');
+
+                                    ?>
 
                                 </div>
                             </div>
 
                             <div class="col-md-2 cta-button">
+                                <!-- check this functionality -->
                                 <a href="#" class="btn btn-lg btn-block btn-primary">Check This</a>
                             </div>
                         </div>
@@ -254,23 +285,18 @@ function searchResult()
             </div>
 <?php
         }
-        // echo '<pre>';
-        // $array = json_decode(json_encode($q), true);
-
-
-        // print_r($array);
-
-        // echo $query;
-        // print_r($query);
     }
-
 
     if (!isset($_GET['search'])) {
         echo 'something is wrong';
     }
 }
 
+// results page shortcode
 add_shortcode('results', 'searchResult');
+
+
+
 
 
 //enqueue files
@@ -284,79 +310,23 @@ function search493_enqueue()
     wp_enqueue_style('style', $enq . 'css/style.css');
 
     //scripts
-    wp_enqueue_script('bootstrap', $enq . 'js/bootstrap.min.js');
-    wp_enqueue_script('script', $enq . 'js/script.js');
+    wp_enqueue_script('bootstrap', $enq . 'js/bootstrap.min.js', array(), false, true);
+    wp_enqueue_script('script_jquery', $enq . 'js/script.js', array('jquery'), false, true);
+    wp_localize_script(
+        'script_jquery',
+        'bookmark_ajax_script',
+        array(
+            'ajaxurl' => admin_url('admin-ajax.php')
+        )
+    );
 }
 
 
 add_action('wp_enqueue_scripts', 'search493_enqueue');
 
 
+// require(plugin_dir_path(__FILE__) . 'includes/enqueuefiles.php');
+require(plugin_dir_path(__FILE__) . 'includes/my-account-bookmark.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/dbtables.php');
 
-
-
-
-
-
-// // woocommerce account page
-
-
-add_filter('woocommerce_account_menu_items', 'woo493_my_account_navs');
-function woo493_my_account_navs($menu_links)
-{
-
-    $menu_links['my-listings'] = 'My Files';
-
-    unset($menu_links['dashboard']); // Remove Dashboard
-    // unset($menu_links['my-listings']); // Remove Payment Methods
-    unset($menu_links['promotions']); // Remove Payment Methods
-    unset($menu_links['my-bookmarks']); // Remove Payment Methods
-    unset($menu_links['orders']); // Remove Payment Methods
-    unset($menu_links['downloads']); // Remove Payment Methods
-    //print_r(($menu_links['my-listings'])); // Remove Orders
-    unset($menu_links['edit-account']); // Disable Downloads
-    unset($menu_links['edit-address']); // Remove Account details tab
-    unset($menu_links['customer-logout']); // Remove Logout link
-
-    return $menu_links;
-}
-
-
-
-/*
- * Step 1. Add Link (Tab) to My Account menu
- */
-add_filter('woocommerce_account_menu_items', 'woo493_add_links_account_page', 40);
-function woo493_add_links_account_page($menu_links)
-{
-
-    $menu_links = array_slice($menu_links, 0, 3, true)
-        + array('new-bookmarks' => 'bookmark')
-        + array_slice($menu_links, 3, NULL, true);
-
-    return $menu_links;
-}
-
-
-/*
- * Step 2. Register Permalink Endpoint
- */
-add_action('init', 'woo493_endpoints');
-function woo493_endpoints()
-{
-
-    // WP_Rewrite is my Achilles' heel, so please do not ask me for detailed explanation
-    add_rewrite_endpoint('new-bookmarks', EP_PAGES);
-}
-
-
-/*
- * Step 3. Content for the new page in My Account, woocommerce_account_{ENDPOINT NAME}_endpoint
- */
-add_action('woocommerce_account_new-bookmarks_endpoint', 'woo493_endpoint_contents');
-function woo493_endpoint_contents()
-{
-
-    // of course you can print dynamic content here, one of the most useful functions here is get_current_user_id()
-    echo 'Last time you logged in: yesterday from Safari.';
-}
+register_activation_hook(__FILE__, 'bookmarkTable');
