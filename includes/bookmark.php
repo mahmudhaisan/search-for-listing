@@ -13,9 +13,11 @@ echo $current_post_id;
 // users like query on database
 
 $like_query = $wpdb->get_results($wpdb->prepare(
-    "SELECT like_action FROM `wp_like_info` WHERE user_name = '$current_user' AND post_id = '$current_post_id'"
+    "SELECT * FROM `wp_like_info` WHERE user_name = '$current_user' AND post_id = '$current_post_id'"
 ));
-$like_status = $like_query[0]->like_action;
+
+// echo ($wpdb->num_rows);
+$like_status = $wpdb->num_rows;
 //total like count query
 
 $like_count_query = $wpdb->get_var($wpdb->prepare(
@@ -27,6 +29,10 @@ $like_count_query = $wpdb->get_var($wpdb->prepare(
 $total_likes = $like_count_query;
 
 
+// recieving ajax request
+
+
+
 
 ?>
 
@@ -34,7 +40,12 @@ $total_likes = $like_count_query;
     <ul class="social-network social-circle">
         <!-- posts bottom bar -->
         <li>
-            <i <?php if ($like_status == 'like') : ?> class='fa fa-thumbs-up like-btn' <?php else : ?> class='fa fa-thumbs-o-up like-btn' <?php endif ?> data-id='<?php echo $current_post_id; ?>'> </i>
+
+
+            <i <?php if ($like_status == 1) : ?> class='fa fa-thumbs-up like-btn' <?php else : ?> class='fa fa-thumbs-o-up like-btn' <?php endif ?> data-id='<?php echo $current_post_id; ?>' user_id='<?php echo $current_user; ?>'> </i>
+
+
+
         </li>
 
         <li><a href='' id="bookmark-count" name='boc' class=" fa">

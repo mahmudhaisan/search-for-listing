@@ -24,6 +24,8 @@ if (!defined('ABSPATH')) {
 function search15()
 {
 
+
+
 ?>
     <section class="search-sec">
         <div class="container">
@@ -126,6 +128,7 @@ function searchResult()
                 the_post_thumbnail();
             }
             // var_dump($q);
+
 
             $postTitle = $q->post_title;
             $postTitleDash = strtolower(str_replace(' ', '-', $postTitle));
@@ -316,13 +319,111 @@ function search493_enqueue()
         'script_jquery',
         'bookmark_ajax_script',
         array(
-            'ajaxurl' => admin_url('admin-ajax.php')
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'we_value' => 1234
         )
     );
 }
 
 
 add_action('wp_enqueue_scripts', 'search493_enqueue');
+
+// add_action('wp_ajax_logged_in_action_name', 'logged_in_action_name');
+// add_action('wp_ajax_nopriv_logged_in_action_name', 'logged_in_action_name');
+// add_shortcode('a', 'logged_in_action_name');
+
+// function logged_in_action_name()
+// {
+//     $d = $_POST['action'];
+//     echo ($d);
+//     exit();
+// }
+
+
+
+
+// Same handler function...
+add_action('wp_ajax_my_action', 'my_action');
+add_action('wp_ajax_nopriv_my_action', 'my_action');
+function my_action()
+{
+    global $wpdb;
+    $post_id = $_POST['post_id'];
+    $status = $_POST['status'];
+    $user_id = $_POST['user_id'];
+
+
+    $like_query = $wpdb->get_results($wpdb->prepare(
+        "SELECT * FROM `wp_like_info` WHERE user_name = '$user_id' AND post_id = '$post_id'"
+    ));
+
+    // echo ($wpdb->num_rows);
+    $like_status = $wpdb->num_rows;
+    //total like count query
+
+    // print_r($wpdb);
+
+    if (isset($status)) {
+        switch ($status) {
+
+            case 'like':
+                $sql = "INSERT INTO `wp_like_info` (`user_name`, `post_id`, `like_action`) VALUES ('$user_id', $post_id, '$status') 
+                ON DUPLICATE KEY UPDATE `like_action` = 'like'";
+                break;
+
+            case 'unlike':
+
+                $sql = "DELETE FROM `wp_like_info` WHERE  `user_name`= '$user_id' AND `post_id`= '$post_id' ";
+
+                break;
+            default:
+                break;
+        }
+
+        $wpdb->query($sql);
+
+        print_r($wpdb);
+    }
+
+
+
+
+
+    // if ($status == 'like') {
+
+    //     $like_insert = "INSERT INTO `wp_like_info` (`user_name`, `post_id`, `like_action`) VALUES ('$user_id', $post_id, '$status') ON DUPLICATE KEY UPDATE like_action = 1";
+
+    //     $qr = $wpdb->query($like_insert);
+    //     print_r($qr);
+
+
+
+    //     // if ($like_status == 0) {
+    //     //     $wpdb->insert('wp_like_info', array(
+    //     //         'user_name' => $user_id,
+    //     //         'post_id' => $post_id,
+    //     //         'like_action' => 'like'
+    //     //     ));
+    //     // }
+
+    //     // if ($like_status > 0) {
+
+    //     //     $wpdb->update('wp_like_info', array('like_action' => 'like'), array('user_name' => $user_id, 'post_id' => $post_id));
+    //     // }
+    // }
+
+    // if ($status == 'unlike') {
+    //     $wpdb->query("DELETE FROM 'wp_like_info' WHERE post_id = $post_id AND user_name = $user_id ");
+    // }
+
+
+
+    wp_die();
+}
+
+
+
+
 
 
 // require(plugin_dir_path(__FILE__) . 'includes/enqueuefiles.php');
