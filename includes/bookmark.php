@@ -44,23 +44,24 @@ $total_likes = $like_count_query;
 
             <i <?php if ($like_status == 1) : ?> class='fa fa-thumbs-up like-btn' <?php else : ?> class='fa fa-thumbs-o-up like-btn' <?php endif ?> data-id='<?php echo $current_post_id; ?>' user_id='<?php echo $current_user; ?>'> </i>
 
+            <span id="bookmark-count" data-id="<?php echo ($total_likes); ?>" class="like-count">
+                <?php echo ($total_likes); ?>
+            </span>
+
 
 
         </li>
 
-        <li><a href='' id="bookmark-count" name='boc' class=" fa">
 
-                <?php
-                if ($total_likes > 0) {
 
-                    echo ($total_likes);
-                } else {
-                    echo 0;
-                }
-                ?>
 
-            </a>
-        </li>
+
+
+
+
+
+
+
         <li><a href="http://localhost:10003/listing/<?php echo $postTitleDash; ?>/#reviews" class="icoRss"><i class="fa fa-star"></i></a></li>
         <li><a href="#" class="icoRss"><i class="fa fa-share"></i></a></li>
     </ul>

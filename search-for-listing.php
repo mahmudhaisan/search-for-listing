@@ -271,7 +271,7 @@ function searchResult()
                                     </div>
 
                                     <?php
-                                    require(plugin_dir_path(__FILE__) . 'includes/bookmark.php');
+                                    include(plugin_dir_path(__FILE__) . 'includes/bookmark.php');
 
                                     ?>
 
@@ -342,7 +342,7 @@ add_action('wp_enqueue_scripts', 'search493_enqueue');
 
 
 
-// Same handler function...
+// Ajax Part
 add_action('wp_ajax_my_action', 'my_action');
 add_action('wp_ajax_nopriv_my_action', 'my_action');
 function my_action()
@@ -350,7 +350,10 @@ function my_action()
     global $wpdb;
     $post_id = $_POST['post_id'];
     $status = $_POST['status'];
+    // global $status;
     $user_id = $_POST['user_id'];
+    $like_counts = $_POST['like_total'];
+
 
 
     $like_query = $wpdb->get_results($wpdb->prepare(
@@ -382,45 +385,25 @@ function my_action()
 
         $wpdb->query($sql);
 
-        print_r($wpdb);
+        // print_r($wpdb);
+        echo like_count($post_id);
+        // echo $like_counts . ' total like';
+        // return $like_counts;
     }
-
-
-
-
-
-    // if ($status == 'like') {
-
-    //     $like_insert = "INSERT INTO `wp_like_info` (`user_name`, `post_id`, `like_action`) VALUES ('$user_id', $post_id, '$status') ON DUPLICATE KEY UPDATE like_action = 1";
-
-    //     $qr = $wpdb->query($like_insert);
-    //     print_r($qr);
-
-
-
-    //     // if ($like_status == 0) {
-    //     //     $wpdb->insert('wp_like_info', array(
-    //     //         'user_name' => $user_id,
-    //     //         'post_id' => $post_id,
-    //     //         'like_action' => 'like'
-    //     //     ));
-    //     // }
-
-    //     // if ($like_status > 0) {
-
-    //     //     $wpdb->update('wp_like_info', array('like_action' => 'like'), array('user_name' => $user_id, 'post_id' => $post_id));
-    //     // }
-    // }
-
-    // if ($status == 'unlike') {
-    //     $wpdb->query("DELETE FROM 'wp_like_info' WHERE post_id = $post_id AND user_name = $user_id ");
-    // }
-
-
 
     wp_die();
 }
 
+
+function like_count($post_id)
+{
+    global $wpdb;
+
+    $likes_count_query = $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM `wp_like_info` WHERE `post_id`= $post_id AND `like_action`= 'like' "
+    ));
+    return $likes_count_query; //working
+}
 
 
 
