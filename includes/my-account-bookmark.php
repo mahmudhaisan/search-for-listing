@@ -48,53 +48,101 @@ function woo493_endpoints()
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
  * Step 3. Content for the new page in My Account, woocommerce_account_{ENDPOINT NAME}_endpoint
  */
 add_action('woocommerce_account_new-bookmarks_endpoint', 'woo493_endpoint_contents');
 function woo493_endpoint_contents()
 {
+    global $current_user;
+    wp_get_current_user();
+    $bookmark_user = $current_user->user_login;;
+    // $bookmark_query = 
 
+    if (isset($bookmark_user)) {
+        global $wpdb; ?>
 
-?>
-
-    <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border-radius: 16px;">
-                        <div class="well profile col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
-                                <figure>
-                                    <img src="http://localhost:10003/wp-content/uploads/2022/03/da15b63c3a0f6b-1.jpg" alt="" class="img-circle" style="width:75px;" id="user-img">
-                                </figure>
-                                <h5 style="text-align:center;"><strong id="user-name">Arun Kumar Perumal</strong></h5>
 
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 divider text-center"></div>
-                                <div class="col-lg-6 left" style="text-align:center;overflow-wrap: break-word;">
-                                    <h4>
-                                        <p style="text-align: center;"><strong id="user-globe-rank"><i class="fa fa-eye" aria-hidden="true"></i> </strong></p>
-                                    </h4>
-                                    <p><small class="label label-success"> View Listing</small></p>
-                                    <!--<button class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Follow </button>-->
-                                </div>
-                                <div class=" col-lg-6 left" style="text-align:center;overflow-wrap: break-word;">
-                                    <h4>
-                                        <p style="text-align: center;"><strong id="user-college-rank"><i class="fa fa-trash" aria-hidden="true"></i> </strong></p>
-                                    </h4>
-                                    <p> <small class="label label-warning">Remove Listing</small></p>
-                                    <!-- <button class="btn btn-info btn-block"><span class="fa fa-user"></span> View Profile </button>-->
+            <?php $bookmarks = $wpdb->get_results(
+                "SELECT `post_id` FROM `wp_like_info` WHERE `user_name`= '$bookmark_user' AND `like_action`= 'like' "
+            );
+
+
+            foreach ($bookmarks as $bookmark) {
+
+
+                $args = array(
+                    'numberposts' => -1,
+                    'post_type'   => 'job_listing',
+                );
+
+                $all_posts = get_posts($args);
+                // echo '<pre>';
+                // // print_r($all_posts);
+                // echo '</pre>';
+                foreach ($all_posts as $post) {
+
+                    $post_id_number = $post->ID;
+                    $post_title_name = $post->post_title;
+                    $imgArray = get_post_meta($post->ID, '_job_cover', true);
+                    $defaultImg = 'https://cdn.searchenginejournal.com/wp-content/uploads/2019/08/c573bf41-6a7c-4927-845c-4ca0260aad6b-1520x800.jpeg';
+                    $postImg = $imgArray[0];
+                    $link = get_permalink($post->ID);
+
+                    if ($post_id_number  == $bookmark->post_id) {
+            ?>
+
+                        <div class="col-md-4">
+                            <div class="card main-card">
+                                <img src="<?php if (!empty($postImg)) {
+                                                echo $postImg;
+                                            } else {
+                                                echo $defaultImg;
+                                            } ?>" class="card-img-top card-image-round" alt="...">
+                                <div class="card-body main-card-body">
+                                    <h5 class="card-title main-card-tittle"><a href="<?php echo $link; ?>"><?php echo $post_title_name ?></a></h5>
+                                    <a href="<?php echo $link; ?>" class="btn btn-primary">View Listing</a>
+                                    <a href="#" class="btn btn-dark">Remove Listing</a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
 
 
 
-<?php }
+    <?php }
+                }
+            }
+            echo '</div>';
+        }
+    }

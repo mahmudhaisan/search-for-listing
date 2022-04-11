@@ -2,16 +2,17 @@
 
 // // bookmark btn functionality
 jQuery(document).ready(function($){
+
 $(".like-btn").on('click', function(){
 var post_id = $(this).data('id');
 var user_id = $(this).attr('user_id');
 var total_like = $("#bookmark-count").data('id');
 $clicked_btn = $(this);
 
-if($clicked_btn.hasClass('fa-thumbs-o-up')){
+if($clicked_btn.hasClass('fa-heart-o')){
     var action = 'like';
 
-}else if($clicked_btn.hasClass('fa-thumbs-up')){
+}else if($clicked_btn.hasClass('fa-heart')){
     var action='unlike';
 }
 
@@ -28,40 +29,38 @@ $.ajax({
     },
     success: function(response){
         // alert('Got this from the server: ' + response);
-        if(action == 'like'){
-            $clicked_btn.removeClass('fa-thumbs-o-up');
-            $clicked_btn.addClass('fa-thumbs-up');
-            
-           
-        }else if(action == 'unlike'){
-            $clicked_btn.removeClass('fa-thumbs-up');
-            $clicked_btn.addClass('fa-thumbs-o-up');
+
+        if( jQuery('body').hasClass('logged-in') ) {
+            if(action == 'like'){
+                $clicked_btn.removeClass('fa-heart-o');
+                $clicked_btn.addClass('fa-heart');
+                $clicked_btn.addClass('bg-icon-selected');
+                
+               
+            }else if(action == 'unlike'){
+                $clicked_btn.removeClass('fa-heart');
+                $clicked_btn.addClass('fa-heart-o');
+                $clicked_btn.removeClass('bg-icon-selected');
+                
+            }
+        } else{
+            window.location.href='http://localhost:10003/my-account-2/';
+            $clicked_btn.siblings('li.like-count').text(like_total);
         }
 
 
-        $(document).on('click', '.love', function (e) {
-            // your code
-        });
+    $clicked_btn.siblings('li.like-count').text(response);
+    
 
 
 
-        $clicked_btn.siblings('span.like-count').text(response);
-
-
-
-        // $("#bookmark-count").text(response);
-
-        
-        
-        // alert(response);
-
-        // alert(like_total);
     }
 })
 
-
-
  });
+
+
+
 
  });
 
@@ -80,3 +79,26 @@ $.ajax({
 // 		alert('Got this from the server: ' + response);
 // 	});
 // });
+
+
+
+
+
+
+
+
+    function myFunction() {
+        /* Get the text field */
+        var copyText = document.getElementById("myInput");
+      
+        /* Select the text field */
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /* For mobile devices */
+      
+         /* Copy the text inside the text field */
+        navigator.clipboard.writeText(copyText.value);
+      
+        /* Alert the copied text */
+        alert("Copied the text: " + copyText.value);
+      }
+   
