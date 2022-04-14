@@ -52,32 +52,6 @@ function woo493_endpoints()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
  * Step 3. Content for the new page in My Account, woocommerce_account_{ENDPOINT NAME}_endpoint
  */
@@ -133,7 +107,10 @@ function woo493_endpoint_contents()
                                 <div class="card-body main-card-body">
                                     <h5 class="card-title main-card-tittle"><a href="<?php echo $link; ?>"><?php echo $post_title_name ?></a></h5>
                                     <a href="<?php echo $link; ?>" class="btn btn-primary">View Listing</a>
-                                    <a href="#" class="btn btn-dark">Remove Listing</a>
+
+
+                                    <a name="remove-listing" href="#" class="btn btn-dark">Remove Listing</a>
+
                                 </div>
                             </div>
                         </div>

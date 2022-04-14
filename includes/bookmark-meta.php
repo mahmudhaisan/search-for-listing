@@ -4,7 +4,7 @@ global $wpdb;
 //getting current user
 $current_user = wp_get_current_user()->user_login;
 //getting current post id
-$current_post_id = $q->ID;
+$current_post_id = $currentPostId;
 
 
 // users like query on database
@@ -34,6 +34,35 @@ $total_likes = $like_count_query;
 ?>
 
 <div class="mt-5">
+
+
+    <ul class="social">
+        <li>
+            <a href="https://twitter.com/" title="">
+                <span class="icon fa fa-heart"> </span>
+            </a>
+        </li>
+        <li>
+            <a href="https://twitter.com/" title="">
+                <span class="icon"> 1</span>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.facebook.com/" title="">
+                <span class="icon fa fa-star"></span>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/" title="">
+                <span class="icon fa fa-share"></span>
+            </a>
+        </li>
+    </ul>
+
+
+
+
+
     <!-- <i class="fa fa-heart-o"></i> -->
     <ul class="social-network social-circle">
         <!-- posts bottom bar -->
