@@ -34,7 +34,7 @@ function search15()
 
 
     <div class="s130">
-        <form action="/search" method="get">
+        <form action="/search-posts" method="get">
             <div class="inner-form">
                 <div class="input-field first-wrap">
                     <div class="svg-wrapper">
@@ -53,55 +53,6 @@ function search15()
     </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="wrapper">
-        <form action="/search" method="get">
-            <div class="search_box">
-                <div class="search_field">
-                    <!-- <input type="text" class="input" placeholder="Search"> -->
-                    <input type="text" class="form-control" placeholder="Search freelancers or jobs" name="search" id="" value="<?php echo $_GET['search']; ?>">
-                </div>
-                <div class="dropdown">
-                    <select name='select-listing-type' class="select-search-field">
-                        <option name="freelancers" value="freelancers" <?php if ($selectValue == 'freelancers') {
-                                                                            echo 'selected';
-                                                                        } ?>>Freelancers</option>
-                        <option name="jobs" value="jobs" <?php if ($selectValue == 'jobs') {
-                                                                echo 'selected';
-                                                            } ?>>Jobs</option>
-
-                    </select>
-
-                </div>
-                <div class="search-submit-btn">
-                    <button type="submit" class="btn text-light wrn-btn">Search</button>
-                </div>
-
-
-            </div>
-        </form>
-    </div>
-
     <?php
     $output = ob_get_contents();
     ob_end_clean();
@@ -113,6 +64,21 @@ function search15()
 add_shortcode('search', 'search15');
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //search page functionality
 function searchResult()
 {
@@ -121,59 +87,79 @@ function searchResult()
     //check if search term in search bar and not empty
     if (isset($_GET['search']) && !empty($_GET['search'])) {
 
-        $selectValue = $_GET['select-listing-type'];
+        // $selectValue = $_GET['select-listing-type'];
 
         $search = $_GET['search'];
-        $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-        $selectTypes = $_GET["post-type-select"];
+        // $paged = get_query_var('paged');
+        // $selectTypes = $_GET["post-type-select"];
+
+
+        $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+
+
 
         $args = array(
             "post_type" => "job_listing",
             "s" => $search,
-            'posts_per_page' => 2,
-            'paged' => $paged,
-            'meta_key' => '_case27_listing_type',
-            'meta_value' => $selectValue,
-            'meta_compare' => '='
+            'posts_per_page' => 1,
+            "paged" => $paged
+            // 'meta_key' => '_case27_listing_type',
+            // 'meta_value' => $selectValue,
+            // 'meta_compare' => '='
 
         );
 
         $new_query = new WP_Query($args);
+        // global $new_query;
 
         $currentPostId = $new_query->ID;
 
-        // $meta = get_post_meta($currentPostId);
-        // //post ratings and reviews
-        // $reviewCount = $meta['_case27_review_count'][0];
-        // $averageRating = $meta['_case27_average_rating'][0] / 2;
-        // echo '<pre>';
-        // print_r($new_query);
-        // echo '</pre>';
+
+
+
+        // normal pagination 
+        $big = 999999999; // need an unlikely integer
+        echo paginate_links(array(
+            'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+            'format' => '?paged=%#%',
+            'current' => max(1, get_query_var('paged')),
+            'total' => $new_query->max_num_pages,
+
+        ));
+
+
+
+
 
         if ($new_query->have_posts()) {
+
+
+            //search results container start
             echo '<div class="container">';
             while ($new_query->have_posts()) {
+
                 $meta = get_post_meta($currentPostId);
                 $new_query->the_post();
-                //posts info
 
+                //posts info
                 $currentPostId = get_the_ID();
-                $postTitle = get_the_title();
-                $postContent = get_the_content();
                 $postLink = get_the_guid();
-                $defaultImg = 'https://cdn.searchenginejournal.com/wp-content/uploads/2019/08/c573bf41-6a7c-4927-845c-4ca0260aad6b-1520x800.jpeg';
+                $defaultImg = 'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png';
                 $postImage = get_field('_job_cover', $new_query->ID);
                 $reviewCount = get_field('_case27_review_count', $currentPostId);
                 $averageRating = get_field('_case27_average_rating', $currentPostId) / 2;
                 $listingType = get_field('_case27_listing_type', $currentPostId);
 
 
+
+
+
     ?>
 
                 <div class="col-sm-12 post-row">
-                    <div class="bs-calltoaction bs-calltoaction-default">
+                    <div class="">
                         <div class="row">
-                            <div class="col-md-5 cta-contents">
+                            <div class="col-md-5">
                                 <!-- show post image -->
                                 <img class="wh" src="<?php if (!empty($postImage)) {
                                                             the_field('_job_cover', $new_query->ID);
@@ -182,18 +168,18 @@ function searchResult()
                                                         } ?>" alt="">
                             </div>
 
-                            <div class="col-md-5 cta-contents">
+                            <div class="col-md-5">
                                 <h1 class="cta-title">
                                     <!-- post title -->
                                     <a href="<?php echo $postLink; ?>"> <?php the_title(); ?> </a>
                                 </h1>
-                                <div class="cta-desc">
+                                <div class="">
                                     <!-- post content -->
                                     <p><?php the_content(); ?></p>
                                     <br>
                                 </div>
 
-                                <div class="cta-desc">
+                                <div class="">
                                     <div>
                                         <?php
 
@@ -263,13 +249,6 @@ function searchResult()
                                             echo '<span class="fa fa-star checked"></span>';
                                         }
 
-                                        // if ($reviewCount == 0) {
-                                        //     echo '<span class="fa fa-star not-checked"></span>';
-                                        //     echo '<span class="fa fa-star not-checked"></span>';
-                                        //     echo '<span class="fa fa-star not-checked"></span>';
-                                        //     echo '<span class="fa fa-star not-checked"></span>';
-                                        //     echo '<span class="fa fa-star not-checked"></span>';
-                                        // }
 
                                         ?>
                                         <span class="p-1">
@@ -291,7 +270,7 @@ function searchResult()
 
                             <div class="col-md-2 cta-button">
                                 <!-- check this functionality -->
-                                <a href="#" class="btn btn-lg btn-block btn-primary">Check This</a>
+                                <a href="#" id="test" class="btn btn-lg btn-block btn-primary">Check This</a>
 
                             </div>
                         </div>
@@ -301,17 +280,26 @@ function searchResult()
 <?php }
 
             echo '</div>';
+            if ($new_query->max_num_pages > 1) {
+                echo '<div class="posts_loadmore">More posts</div>';
+            }
         }
+
+
+
+
+
         wp_reset_postdata();
     }
 
-    if ($_GET['search'] == '' || $selectValue == '') {
+    if ($_GET['search'] == '') {
         echo 'please search by a keyword';
     }
 
 
 
     echo '</div>';
+
 
     $output = ob_get_contents();
     ob_end_clean();
@@ -326,10 +314,63 @@ add_shortcode('results', 'searchResult');
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// working but dont know how
+
+// function my_pagination_rewrite()
+// {
+//     $search = $_GET['search'];
+//     $paged = (isset($my_query_array['paged']) && !empty($my_query_array['paged'])) ? $my_query_array['paged'] : 1;
+//     add_rewrite_rule('search/page/?([0-9]{1,})/?$', "index.php?post_type=job_listing&paged=$paged&search=$search", 'top');
+// }
+// add_action('init', 'my_pagination_rewrite');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //enqueue files
 function search493_enqueue()
 {
     $enq = plugin_dir_url(__FILE__) . 'assets/';
+    global $new_query;
+
+    $search = $_GET['search'];
 
     // style
     wp_enqueue_style('bootstrap', $enq . 'css/bootstrap.min.css');
@@ -344,7 +385,11 @@ function search493_enqueue()
         'bookmark_ajax_script',
         array(
             'ajaxurl' => admin_url('admin-ajax.php'),
-            'we_value' => 1234
+            'posts_vars' => json_encode($new_query->query_vars),
+            'current_page' => get_query_var('paged') ? get_query_var('paged') : 1,
+            'max_pages' => $new_query->max_num_pages,
+            'search_term' => $search
+
         )
     );
 }
@@ -399,7 +444,13 @@ function my_action()
         $wpdb->query($sql);
 
         // print_r($wpdb);
-        echo like_count($post_id);
+
+        $results = [];
+        $results['like-count'] = like_count($post_id);
+        $results['like2'] = 12;
+
+        wp_send_json($results);
+
         // echo $like_counts . ' total like';
         // return $like_counts;
     }
@@ -417,6 +468,65 @@ function like_count($post_id)
     ));
     return $likes_count_query; //working
 }
+
+
+
+add_action('wp_ajax_load_more_ajax', 'load_more_ajax');
+add_action('wp_ajax_nopriv_load_more_ajax', 'load_more_ajax');
+
+
+
+
+
+
+function load_more_ajax()
+{
+
+    $args = json_decode(stripslashes($_POST['query']), true);
+    $args['paged'] = $_POST['page'] + 1; // we need next page to be loaded
+    $args['search_term'] = $_POST['search_term']; // we need next page to be loaded
+
+
+
+
+    // it is always better to use WP_Query but not here
+    // $posts_qry = new WP_Query($args);
+
+    $args1 = array(
+        'post_type' => 'job_listing',
+        's' => $args['search_term'],
+        'posts_per_page' => 1,
+        'paged'    => $args['paged'],
+    );
+
+    $loop = new WP_Query($args1);
+
+    $out = '';
+
+    if ($loop->have_posts()) :  while ($loop->have_posts()) : $loop->the_post();
+            $out .= '<div class="small-12 large-4 columns">
+                <h1>' . get_the_title() . '</h1>
+                <p>' . get_the_content() . '</p>
+         </div>';
+
+        endwhile;
+    endif;
+    wp_reset_postdata();
+
+    die($out);
+
+
+
+    // Reset Query
+    wp_reset_query();
+
+
+
+
+
+    wp_die();
+}
+
 
 
 
