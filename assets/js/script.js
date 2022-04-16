@@ -77,24 +77,27 @@ jQuery(document).ready(function($) {
                 'query': bookmark_ajax_script.posts_vars,
                 'page': bookmark_ajax_script.current_page,
                 'search_term': bookmark_ajax_script.search_term,
-                beforeSend: function(xhr) {
-                    $load_more.text('Loading...'); // change the button text, you can also add a preloader image
-                },
+
             },
 
             success: function(data) {
 
                 if (data) {
-                    $load_more.text('More posts').prev().before(data); // insert new posts
+                    $('.ajax_loaded_posts').append(data); // insert new posts
                     bookmark_ajax_script.current_page++;
 
-                    if (bookmark_ajax_script.current_page == bookmark_ajax_script.max_page)
+                    if (bookmark_ajax_script.current_page == bookmark_ajax_script.max_pages) {
+
                         $load_more.remove(); // if last page, remove the button
+
+                    }
 
                     // you can also fire the "post-load" event here if you use a plugin that requires it
                     // $( document.body ).trigger( 'post-load' );
                 } else {
                     $load_more.remove(); // if no data, remove the button as well
+                    $('.no-posts').append('no posts available');
+
 
                 }
 
