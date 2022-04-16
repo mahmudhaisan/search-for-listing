@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
 
 
 
+    //like calculation on like button
     $(".like-btn").on('click', function() {
         var post_id = $(this).data('id');
         var user_id = $(this).attr('user_id');
@@ -65,7 +66,7 @@ jQuery(document).ready(function($) {
 
 
 
-
+    //ajax load more on search results page
     $('.posts_loadmore').on('click', function() {
         $load_more = $(this);
 
@@ -98,11 +99,7 @@ jQuery(document).ready(function($) {
                     $load_more.remove(); // if no data, remove the button as well
                     $('.no-posts').append('no posts available');
 
-
                 }
-
-
-
 
                 alert('Got this from the server: ' + data);
             }
@@ -110,50 +107,11 @@ jQuery(document).ready(function($) {
         });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        $(".default_option").click(function() {
-            $(".dropdown ul").addClass("active");
-        });
-
-        $(".dropdown ul li").click(function() {
-            var text = $(this).text();
-            $(".default_option").text(text);
-            $(".dropdown ul").removeClass("active");
-        });
-
     });
 
 
 
 
-    // jQuery(document).ready(function($) {
 
-
-    // 	var data = {
-    // 		'action': 'my_action',
-    // 		'whatever': bookmark_ajax_script.we_value      // We pass php values differently!
-    // 	};
-    // 	// We can also pass the url value separately from ajaxurl for front end AJAX implementations
-    // 	jQuery.post(bookmark_ajax_script.ajaxurl, data, function(response) {
-    // 		alert('Got this from the server: ' + response);
-    // 	});
-    // });
 
 });

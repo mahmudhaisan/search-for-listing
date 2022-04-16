@@ -33,31 +33,44 @@ $total_likes = $like_count_query;
 
 ?>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="content-center">
+    <ul class="ul-class">
+        <li id="bookmark-click" <?php if ($like_status == 0) : ?> class='fa fa-heart-o like-btn bookmarks-info' <?php else : ?> class='fa fa-heart like-btn bookmarks-info bg-icon-selected' <?php endif ?> data-id='<?php echo $current_post_id; ?>' user_id='<?php echo $current_user; ?>'></li>
+        <li id="bookmark-count" data-id="<?php echo ($total_likes); ?>" class="fa like-count bookmarks-info">
+            <?php echo ($total_likes); ?>
+        </li>
+        <li id="review-link" class="">
+            <a href="http://localhost:10003/listing/<?php echo $postTitleDash; ?>/#reviews">
+                <i class="fa fa-star"></i>
+            </a>
+        </li>
+        <li class="fa fa-share" data-toggle="modal" data-target="#myModal"></li>
+    </ul>
+</div>
+
+
+
+
+
+
 <div class="mt-5">
 
-
-    <ul class="social">
-        <li>
-            <a href="https://twitter.com/" title="">
-                <span class="icon fa fa-heart"> </span>
-            </a>
-        </li>
-        <li>
-            <a href="https://twitter.com/" title="">
-                <span class="icon"> 1</span>
-            </a>
-        </li>
-        <li>
-            <a href="https://www.facebook.com/" title="">
-                <span class="icon fa fa-star"></span>
-            </a>
-        </li>
-        <li>
-            <a href="https://plus.google.com/" title="">
-                <span class="icon fa fa-share"></span>
-            </a>
-        </li>
-    </ul>
 
 
 
@@ -67,17 +80,27 @@ $total_likes = $like_count_query;
     <ul class="social-network social-circle">
         <!-- posts bottom bar -->
 
-        <li <?php if ($like_status == 0) : ?> class='fa fa-heart-o like-btn bookmark-info' <?php else : ?> class='fa fa-heart like-btn bookmark-info bg-icon-selected' <?php endif ?> data-id='<?php echo $current_post_id; ?>' user_id='<?php echo $current_user; ?>'>
+        <li id="bookmark-click" <?php if ($like_status == 0) : ?> class='fa fa-heart-o like-btn bookmarks-info' <?php else : ?> class='fa fa-heart like-btn bookmarks-info bg-icon-selected' <?php endif ?> data-id='<?php echo $current_post_id; ?>' user_id='<?php echo $current_user; ?>'>
+
+
         </li>
 
 
-        <li id="bookmark-count" data-id="<?php echo ($total_likes); ?>" class="like-count bookmark-info">
+        <li id="bookmark-count" data-id="<?php echo ($total_likes); ?>" class="like-count bookmarks-info">
             <?php echo ($total_likes); ?>
         </li>
 
-        <li><a href="http://localhost:10003/listing/<?php echo $postTitleDash; ?>/#reviews" class="icoRss"><i class="fa fa-star"></i></a></li>
+        <li id="bookmark-review" class="bookmarks-info">
+            <a href="http://localhost:10003/listing/<?php echo $postTitleDash; ?>/#reviews">
+                <i class="fa fa-star"></i>
+            </a>
+        </li>
 
-        <li><button type="button" class="bookmark-info" data-toggle="modal" data-target="#myModal"><i class="fa fa-share"></i></button> </li>
+        <li id="bookmark-share" class="bookmarks-info">
+            <a href="" data-toggle="modal" data-target="#myModal">
+                <i class="fa fa-share"></i>
+            </a>
+        </li>
 
 
     </ul>

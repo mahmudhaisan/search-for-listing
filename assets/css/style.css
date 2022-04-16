@@ -17,19 +17,6 @@ ul.social-network li {
     background-color: #f80101;
 }
 
-.bookmark-info {
-    display: inline-block;
-    position: relative;
-    margin: 0 auto 0 auto;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
-    text-align: center;
-    padding: 6px;
-    align-items: center;
-    align-items: center;
-}
-
 .social-circle li a {
     /* display:inline-block; */
     /* position:relative; */
@@ -438,4 +425,173 @@ a.page-numbers {
 .misha_loadmore:hover {
     background-color: #767676;
     color: #fff;
+}
+
+
+/* bookmark social styling */
+
+.demopadding {
+    margin: 50px auto;
+    width: 140px;
+    text-align: left;
+}
+
+.icon {
+    position: relative;
+    text-align: center;
+    width: 0px;
+    height: 0px;
+    padding: 20px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    -moz-border-radius: 20px 20px 20px 20px;
+    -webkit-border-radius: 20px 20px 20px 20px;
+    -khtml-border-radius: 20px 20px 20px 20px;
+    color: #FFFFFF;
+}
+
+.icon i {
+    font-size: 20px;
+    position: absolute;
+    left: 9px;
+    top: 10px;
+}
+
+.icon.social {
+    float: left;
+    margin: 0 5px 0 0;
+    cursor: pointer;
+    background: #6d6e71;
+    color: #262626;
+    transition: 0.5s;
+    -moz-transition: 0.5s;
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+}
+
+.icon.social:hover {
+    background: #262626;
+    color: #6d6e71;
+    transition: 0.5s;
+    -moz-transition: 0.5s;
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+    -webkit-filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .8));
+    -moz-filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .8));
+    -ms-filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .8));
+    -o-filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .8));
+    filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .8));
+}
+
+.icon.social.fb i {
+    left: 13px;
+    top: 10px;
+}
+
+.icon.social.tw i {
+    left: 11px;
+}
+
+.icon.social.in i {
+    left: 11px;
+}
+
+
+/* last social */
+
+.content-center {
+    /* height: 100vh; */
+    /* display: flex;
+    justify-content: center;
+    align-items: center */
+}
+
+.ul-class {
+    display: flex;
+    list-style: none
+}
+
+@media (max-width:700px) {
+    .ul-class {
+        display: block
+    }
+}
+
+.ul-class li {
+    margin: 4px;
+    height: 22px;
+    width: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+}
+
+.ul-class li i {
+    transition: all 0.3s linear
+}
+
+.ul-class li:hover i {
+    color: #fff;
+    font-size: 17px
+}
+
+.ul-class li:hover::after {
+    opacity: 1;
+    transform: scale(0.8)
+}
+
+.ul-class li::after {
+    content: "";
+    position: absolute;
+    height: inherit;
+    width: inherit;
+    border-radius: 50%;
+    opacity: 0;
+    z-index: -1;
+    transition: all 0.3s linear
+}
+
+.ul-class li:nth-child(1) {
+    border: 2px solid #3b5998;
+    color: #3b5998;
+}
+
+.ul-class li:nth-child(1)::after {
+    background-color: #3b5998;
+    color: #3b5998
+}
+
+.ul-class li:nth-child(2) {
+    border: 2px solid #00aced;
+    color: #00aced
+}
+
+.ul-class li:nth-child(2)::after {
+    background-color: #00aced;
+    color: #00aced
+}
+
+.ul-class li:nth-child(3) {
+    border: 2px solid #007bb6;
+    color: #007bb6
+}
+
+.ul-class li:nth-child(3)::after {
+    background-color: #007bb6;
+    color: #007bb6
+}
+
+.ul-class li:nth-child(4) {
+    border: 2px solid #dd4b39;
+    color: #dd4b39
+}
+
+.ul-class li:nth-child(4)::after {
+    background-color: #dd4b39;
+    color: #dd4b39
 }

@@ -60,7 +60,7 @@ function woo493_endpoint_contents()
 {
     global $current_user;
     wp_get_current_user();
-    $bookmark_user = $current_user->user_login;;
+    $bookmark_user = $current_user->user_login;
     // $bookmark_query = 
 
     if (isset($bookmark_user)) {
@@ -94,6 +94,15 @@ function woo493_endpoint_contents()
                     $postImg = $imgArray[0];
                     $link = get_permalink($post->ID);
 
+
+                    if (isset($_GET['remove-id'])) {
+                        $wpdb;
+                        $removed_id = $_GET['remove-id'];
+                        $sql = "DELETE FROM `wp_like_info` WHERE  `user_name`= '$bookmark_user' AND `post_id`= '$removed_id' ";
+                        $wpdb->query($sql);
+                    }
+
+
                     if ($post_id_number  == $bookmark->post_id) {
             ?>
 
@@ -109,7 +118,7 @@ function woo493_endpoint_contents()
                                     <a href="<?php echo $link; ?>" class="btn btn-primary">View Listing</a>
 
 
-                                    <a name="remove-listing" href="#" class="btn btn-dark">Remove Listing</a>
+                                    <a name="remove-listing" href="?remove-id=<?php echo $post_id_number ?>" onclick="" class="btn btn-dark">Remove Listing</a>
 
                                 </div>
                             </div>
