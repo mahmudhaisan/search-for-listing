@@ -26,9 +26,12 @@ $like_count_query = $wpdb->get_var($wpdb->prepare(
 $total_likes = $like_count_query;
 
 
+
+
+
 // recieving ajax request
 
-
+ob_start();
 
 
 ?>
@@ -40,113 +43,70 @@ $total_likes = $like_count_query;
 
 
 
-
-
-
-
-
-
-
-
-
-<div class="content-center">
-    <ul class="ul-class">
-        <li id="bookmark-click" <?php if ($like_status == 0) : ?> class='fa fa-heart-o like-btn bookmarks-info' <?php else : ?> class='fa fa-heart like-btn bookmarks-info bg-icon-selected' <?php endif ?> data-id='<?php echo $current_post_id; ?>' user_id='<?php echo $current_user; ?>'></li>
-        <li id="bookmark-count" data-id="<?php echo ($total_likes); ?>" class="fa like-count bookmarks-info">
-            <?php echo ($total_likes); ?>
-        </li>
-        <li id="review-link" class="">
-            <a href="http://localhost:10003/listing/<?php echo $postTitleDash; ?>/#reviews">
-                <i class="fa fa-star"></i>
-            </a>
-        </li>
-        <li class="fa fa-share" data-toggle="modal" data-target="#myModal"></li>
-    </ul>
-</div>
-
-
-
-
-
-
+<!-- social icons -->
 <div class="mt-5">
+    <div class="content-center">
+        <ul class="ul-class">
+            <li id="bookmark-click" <?php if ($like_status == 0) : ?> class='fa fa-heart-o like-btn bookmarks-info' <?php else : ?> class='fa fa-heart like-btn bookmarks-info bg-icon-selected' <?php endif ?> data-id='<?php echo $current_post_id; ?>' user_id='<?php echo $current_user; ?>'></li>
+            <li id="bookmark-count" data-id="<?php echo ($total_likes); ?>" class="fa like-count bookmarks-info">
+                <?php echo ($total_likes); ?>
+            </li>
+            <li id="review-link" class="">
 
 
-
-
-
-
-    <!-- <i class="fa fa-heart-o"></i> -->
-    <ul class="social-network social-circle">
-        <!-- posts bottom bar -->
-
-        <li id="bookmark-click" <?php if ($like_status == 0) : ?> class='fa fa-heart-o like-btn bookmarks-info' <?php else : ?> class='fa fa-heart like-btn bookmarks-info bg-icon-selected' <?php endif ?> data-id='<?php echo $current_post_id; ?>' user_id='<?php echo $current_user; ?>'>
-
-
-        </li>
-
-
-        <li id="bookmark-count" data-id="<?php echo ($total_likes); ?>" class="like-count bookmarks-info">
-            <?php echo ($total_likes); ?>
-        </li>
-
-        <li id="bookmark-review" class="bookmarks-info">
-            <a href="http://localhost:10003/listing/<?php echo $postTitleDash; ?>/#reviews">
-                <i class="fa fa-star"></i>
-            </a>
-        </li>
-
-        <li id="bookmark-share" class="bookmarks-info">
-            <a href="" data-toggle="modal" data-target="#myModal">
-                <i class="fa fa-share"></i>
-            </a>
-        </li>
-
-
-    </ul>
-
-
+                <a href="http://localhost:10003/listing/<?php echo 12; ?>/#reviews">
+                    <i class="fa fa-star"></i>
+                </a>
+            </li>
+            <li id="share-social" class="fa fa-share" data-toggle="modal" data-id="<?php echo $current_post_id; ?>" data-target="#myModal"></li>
+        </ul>
+    </div>
 </div>
 
 
 
 
+<!-- share modal -->
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
+
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>Share to social channels</h4>
+                <?php echo $current_post_id; ?>
             </div>
             <div class="modal-body text-center">
-                <h5>Do you like this? Share with your friends!</h5>
                 <div class="mt-5">
                     <ul class="share_links">
                         <li class="bg_fb">
-                            <a href="#" class="share_icon" rel="tooltip" title="Facebook">
+                            <span id="fb-share" class="share_icon" rel="tooltip" title="Facebook">
                                 <i class="fa fa-facebook"></i>
-                            </a>
+                            </span>
                         </li>
 
                         <li class="bg_insta"><a href="#" class="share_icon" rel="tooltip" title="Instagram"><i class=" fa fa-instagram"></i></a></li>
 
                         <li class="bg_whatsapp"><a href="#" class="share_icon" rel="tooltip" title="Whatsapp"><i class="fa fa-whatsapp" aria-hidden="true"></i></a></li>
-                        <li class="bg_whatsapp"><a href="#" onclick="myFunction()" class="share_icon" rel="tooltip" title="Whatsapp"><i class="fa fa-clone" aria-hidden="true"></i></a></li>
+                        <li class="bg_whatsapp"><a href="<?php echo $current_post_id; ?>" onclick="myFunction()" class="share_icon" rel="tooltip" title="Whatsapp"><i class="fa fa-clone" aria-hidden="true"></i></a></li>
                     </ul>
                 </div>
             </div>
 
-
-
-            <!-- The text field -->
+            <!-- The text copy field -->
             <input style="display:none" type="text" value="bd" id="myInput">
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
-
-
-
         </div>
+
     </div>
 </div>
+
+
+<?php
+$contentHtml = ob_get_contents();
+ob_get_clean();
+
+echo $contentHtml;

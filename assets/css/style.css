@@ -13,10 +13,6 @@ ul.social-network li {
 
 /* footer social icons */
 
-.social-network a.icoRss:hover {
-    background-color: #f80101;
-}
-
 .social-circle li a {
     /* display:inline-block; */
     /* position:relative; */
@@ -26,11 +22,6 @@ ul.social-network li {
     border-radius: 50%;
     text-align: center;
     padding: 6px;
-}
-
-.icoRss {
-    background-color: #ffffff;
-    border: 1px solid black;
 }
 
 .bookmark-info {
@@ -45,8 +36,8 @@ ul.social-network li {
 }
 
 .bg-icon-selected {
-    background-color: #000;
-    color: white;
+    /* background-color: rgb(169, 238, 190); */
+    /* color: white; */
 }
 
 img.wh {
@@ -93,8 +84,12 @@ div {
     text-transform: initial;
 }
 
-.liked {
-    background-color: red;
+.not-checked {
+    color: #9e9494;
+}
+
+.checked {
+    color: #7b8b05
 }
 
 .notliked {
@@ -118,10 +113,6 @@ div {
     text-align: center;
     box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
     margin-bottom: 30px;
-}
-
-.default-bookmark {
-    color: red;
 }
 
 .share_btn {
@@ -240,16 +231,16 @@ div {
 }
 
 .s130 form .inner-form {
-    /* display: -ms-flexbox; */
     display: flex;
     width: 100%;
     -ms-flex-pack: justify;
     justify-content: space-between;
     -ms-flex-align: center;
     align-items: center;
-    /* box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15); */
+    box-shadow: 0px 8px 20px 0px rgb(0 0 0 / 15%);
     /* border-radius: 34px; */
     overflow: hidden;
+    margin-left: 112px;
     margin-bottom: 30px;
 }
 
@@ -408,7 +399,12 @@ a.page-numbers {
 }
 
 .posts_loadmore {
-    background-color: #ddd;
+    background-color: #000;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    width: 110px;
+    margin: 12px auto;
     border-radius: 2px;
     display: block;
     text-align: center;
@@ -422,80 +418,8 @@ a.page-numbers {
     transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.3s ease-in-out;
 }
 
-.misha_loadmore:hover {
-    background-color: #767676;
-    color: #fff;
-}
-
-
-/* bookmark social styling */
-
-.demopadding {
-    margin: 50px auto;
-    width: 140px;
-    text-align: left;
-}
-
-.icon {
-    position: relative;
-    text-align: center;
-    width: 0px;
-    height: 0px;
-    padding: 20px;
-    border-top-right-radius: 20px;
-    border-top-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    -moz-border-radius: 20px 20px 20px 20px;
-    -webkit-border-radius: 20px 20px 20px 20px;
-    -khtml-border-radius: 20px 20px 20px 20px;
-    color: #FFFFFF;
-}
-
-.icon i {
-    font-size: 20px;
-    position: absolute;
-    left: 9px;
-    top: 10px;
-}
-
-.icon.social {
-    float: left;
-    margin: 0 5px 0 0;
-    cursor: pointer;
-    background: #6d6e71;
-    color: #262626;
-    transition: 0.5s;
-    -moz-transition: 0.5s;
-    -webkit-transition: 0.5s;
-    -o-transition: 0.5s;
-}
-
-.icon.social:hover {
-    background: #262626;
-    color: #6d6e71;
-    transition: 0.5s;
-    -moz-transition: 0.5s;
-    -webkit-transition: 0.5s;
-    -o-transition: 0.5s;
-    -webkit-filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .8));
-    -moz-filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .8));
-    -ms-filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .8));
-    -o-filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .8));
-    filter: drop-shadow(0 1px 10px rgba(0, 0, 0, .8));
-}
-
-.icon.social.fb i {
-    left: 13px;
-    top: 10px;
-}
-
-.icon.social.tw i {
-    left: 11px;
-}
-
-.icon.social.in i {
-    left: 11px;
+.posts_loadmore:hover {
+    background-color: #00ad5f;
 }
 
 
@@ -535,9 +459,10 @@ a.page-numbers {
     transition: all 0.3s linear
 }
 
-.ul-class li:hover i {
+.ul-class li:hover {
+    background-color: rgb(0, 0, 0);
     color: #fff;
-    font-size: 17px
+    /* font-size: 17px */
 }
 
 .ul-class li:hover::after {
@@ -558,12 +483,15 @@ a.page-numbers {
 
 .ul-class li:nth-child(1) {
     border: 2px solid #3b5998;
-    color: #3b5998;
 }
 
 .ul-class li:nth-child(1)::after {
     background-color: #3b5998;
     color: #3b5998
+}
+
+.ul-class li:nth-child(1):hover {
+    background-color: #00ad5f;
 }
 
 .ul-class li:nth-child(2) {
@@ -594,4 +522,8 @@ a.page-numbers {
 .ul-class li:nth-child(4)::after {
     background-color: #dd4b39;
     color: #dd4b39
+}
+
+#fb-share {
+    cursor: pointer;
 }

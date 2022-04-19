@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
 
 
     //like calculation on like button
-    $(".like-btn").on('click', function() {
+    $(document).on('click', '.like-btn', function() {
         var post_id = $(this).data('id');
         var user_id = $(this).attr('user_id');
         var total_like = $("#bookmark-count").data('id');
@@ -31,7 +31,9 @@ jQuery(document).ready(function($) {
 
             },
             success: function(response) {
-                alert('Got this from the server: ' + response);
+                // alert('Got this from the server: ' + response);
+
+
 
 
 
@@ -59,7 +61,7 @@ jQuery(document).ready(function($) {
         })
 
 
-        console.log(pages);
+
 
     });
 
@@ -97,17 +99,48 @@ jQuery(document).ready(function($) {
                     // $( document.body ).trigger( 'post-load' );
                 } else {
                     $load_more.remove(); // if no data, remove the button as well
-                    $('.no-posts').append('no posts available');
+                    $('.no-posts').append('No Posts Available');
 
                 }
 
-                alert('Got this from the server: ' + data);
+                // alert('Got this from the server: ' + data);
             }
 
         });
 
 
     });
+
+    $(document).on('click', '#share-social', function() {
+        var share_post_id = $(this).data('id');
+        $shareClicked = $(this);
+
+
+        $.ajax({
+            url: bookmark_ajax_script.ajaxurl,
+            type: 'post',
+            data: {
+                'action': 'share_modal',
+                'share_post_id': share_post_id
+
+            },
+
+            success: function(data) {
+
+                $('#fb-share').on('click', function(e) {
+                    e.preventDefault();
+
+                    window.location.href = 'https://www.facebook.com/sharer/sharer.php?display=popup&u=' + data;
+                })
+
+                console.log('Got this from the server: ' + data);
+            }
+
+        });
+
+
+    });
+
 
 
 
