@@ -85,10 +85,16 @@ ob_start();
                             </span>
                         </li>
 
-                        <li class="bg_insta"><a href="#" class="share_icon" rel="tooltip" title="Instagram"><i class=" fa fa-instagram"></i></a></li>
+                        <li id="twitter-share" class="bg_insta"><a href="" class="share_icon" rel="tooltip" title="Instagram"><i class=" fa fa-twitter"></i></a></li>
+                        <li id="linkedin-share" class="bg_whatsapp"><a href="" class="share_icon" rel="tooltip" title="Whatsapp"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                        <li id="link-clone" class="bg_whatsapp">
+                            <a href="" class="share_icon" rel="tooltip" title="Whatsapp">
+                                <i class="fa fa-clone" aria-hidden="true">
+                                    <input id="inputCopyText" type="hidden" value="121">
+                                </i>
+                            </a>
+                        </li>
 
-                        <li class="bg_whatsapp"><a href="#" class="share_icon" rel="tooltip" title="Whatsapp"><i class="fa fa-whatsapp" aria-hidden="true"></i></a></li>
-                        <li class="bg_whatsapp"><a href="<?php echo $current_post_id; ?>" onclick="myFunction()" class="share_icon" rel="tooltip" title="Whatsapp"><i class="fa fa-clone" aria-hidden="true"></i></a></li>
                     </ul>
                 </div>
             </div>

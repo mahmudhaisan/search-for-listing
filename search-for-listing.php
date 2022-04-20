@@ -383,6 +383,7 @@ function search493_enqueue()
         'bookmark_ajax_script',
         array(
             'ajaxurl' => admin_url('admin-ajax.php'),
+            'aajaxurl' => admin_url('admin-ajax.php'),
             'posts_vars' => json_encode($new_query->query_vars),
             'current_page' => get_query_var('paged') ? get_query_var('paged') : 1,
             'max_pages' => $new_query->max_num_pages,
@@ -702,7 +703,7 @@ function share_modal()
     $post_query = get_post($share_modal_post_id);
 
     $posts_id_url = $post_query->guid;
-    echo $posts_id_url;
+    echo ($posts_id_url);
 
     wp_die();
 }

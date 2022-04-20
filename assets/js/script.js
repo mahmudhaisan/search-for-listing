@@ -74,6 +74,7 @@ jQuery(document).ready(function($) {
 
         $.ajax({
             url: bookmark_ajax_script.ajaxurl,
+
             type: 'post',
             data: {
                 'action': 'load_more_ajax',
@@ -111,14 +112,20 @@ jQuery(document).ready(function($) {
 
     });
 
+
+    // share Social ajax
+
+
     $(document).on('click', '#share-social', function() {
         var share_post_id = $(this).data('id');
         $shareClicked = $(this);
 
 
         $.ajax({
-            url: bookmark_ajax_script.ajaxurl,
+            url: bookmark_ajax_script.aajaxurl,
             type: 'post',
+            async: false,
+            cache: false,
             data: {
                 'action': 'share_modal',
                 'share_post_id': share_post_id
@@ -127,24 +134,81 @@ jQuery(document).ready(function($) {
 
             success: function(data) {
 
-                $('#fb-share').on('click', function(e) {
-                    e.preventDefault();
 
-                    window.location.href = 'https://www.facebook.com/sharer/sharer.php?display=popup&u=' + data;
-                })
+                if (data) {
 
-                console.log('Got this from the server: ' + data);
+
+                    $('#fb-shares').on('click', function(e) {
+                        e.preventDefault();
+
+
+                        window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=fb.com';
+
+                    });
+                    $('#fb-share').on('click', function(e) {
+                        e.preventDefault();
+
+
+                        window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=fb.com';
+
+                    });
+                    $('#twitter-share').on('click', function(e) {
+                        e.preventDefault();
+
+                        window.location.href = 'https://twitter.com/intent/tweet?url=' + data;
+                    });
+
+                    $('#linkedin-share').on('click', function(e) {
+                        e.preventDefault();
+
+                        window.location.href = 'https://www.linkedin.com/sharing/share-offsite/?url=https://stackoverflow.com/questions/33426752/linkedin-share-post-url';
+                    });
+
+
+
+
+
+
+
+
+
+
+                    let linkClone = document.getElementById('link-clone');
+
+                    let linVal = $("#inputCopyText").val(data);
+
+                    // $('#linkClone').unbind('click');
+                    // linkClone.addEventListener('click', function(e) {
+                    //     e.preventDefault();
+
+
+                    //     console.log(typeof(InputCopy));
+                    //     e.stopPropagation();
+
+
+                    // });
+
+
+                    console.log('Got this from the server: ' + linVal);
+                }
             }
 
         });
-
 
     });
 
 
 
+    $('#link-clone').on('click', function(e) {
+        let InputCopy = document.getElementById('inputCopyText').value;
 
+        e.preventDefault();
 
+        // e.stopPropagation();
 
+        alert(InputCopy);
+    })
+
+    // link clone
 
 });
