@@ -29,8 +29,6 @@ $total_likes = $like_count_query;
 
 
 
-// recieving ajax request
-
 ob_start();
 
 
@@ -44,7 +42,7 @@ ob_start();
 
 
 <!-- social icons -->
-<div class="mt-5">
+<div class="mt-5 bookmark-icon-card">
     <div class="content-center">
         <ul class="ul-class">
             <li id="bookmark-click" <?php if ($like_status == 0) : ?> class='fa fa-heart-o like-btn bookmarks-info' <?php else : ?> class='fa fa-heart like-btn bookmarks-info bg-icon-selected' <?php endif ?> data-id='<?php echo $current_post_id; ?>' user_id='<?php echo $current_user; ?>'></li>
@@ -54,7 +52,7 @@ ob_start();
             <li id="review-link" class="">
 
 
-                <a href="http://localhost:10003/listing/<?php echo 12; ?>/#reviews">
+                <a href="<?php echo $postLink; ?>#reviews">
                     <i class="fa fa-star"></i>
                 </a>
             </li>
@@ -74,7 +72,8 @@ ob_start();
         <div class="modal-content">
             <div class="modal-header">
                 <h4>Share to social channels</h4>
-                <?php echo $current_post_id; ?>
+                <span id="copied-text"></span>
+
             </div>
             <div class="modal-body text-center">
                 <div class="mt-5">
@@ -90,7 +89,7 @@ ob_start();
                         <li id="link-clone" class="bg_whatsapp">
                             <a href="" class="share_icon" rel="tooltip" title="Whatsapp">
                                 <i class="fa fa-clone" aria-hidden="true">
-                                    <input id="inputCopyText" type="hidden" value="121">
+                                    <input id="inputCopyText" type="hidden" value="">
                                 </i>
                             </a>
                         </li>

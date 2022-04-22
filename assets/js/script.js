@@ -165,31 +165,8 @@ jQuery(document).ready(function($) {
                     });
 
 
+                    $("#inputCopyText").val(data);
 
-
-
-
-
-
-
-
-                    let linkClone = document.getElementById('link-clone');
-
-                    let linVal = $("#inputCopyText").val(data);
-
-                    // $('#linkClone').unbind('click');
-                    // linkClone.addEventListener('click', function(e) {
-                    //     e.preventDefault();
-
-
-                    //     console.log(typeof(InputCopy));
-                    //     e.stopPropagation();
-
-
-                    // });
-
-
-                    console.log('Got this from the server: ' + linVal);
                 }
             }
 
@@ -200,15 +177,32 @@ jQuery(document).ready(function($) {
 
 
     $('#link-clone').on('click', function(e) {
-        let InputCopy = document.getElementById('inputCopyText').value;
-
         e.preventDefault();
 
-        // e.stopPropagation();
+        let InputCopy = document.getElementById('inputCopyText');
+        let copiedText = document.getElementById('copied-text');
 
-        alert(InputCopy);
+        InputCopy.type = 'text';
+        InputCopy.select();
+        document.execCommand("copy");
+        InputCopy.type = 'hidden';
+        alert('copied');
+
+
+        // var InputCopy = $('#inputCopyText').val();
+
+        // InputCopy.setSelectionRange(0, 9999);
+
+
+        // alert(InputCopy.value + 'link copied successfully');
+
+        // document.body.removeChild(InputCopy);
+
+
+
+
     })
 
-    // link clone
+
 
 });

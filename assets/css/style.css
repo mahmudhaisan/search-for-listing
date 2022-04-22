@@ -41,8 +41,8 @@ ul.social-network li {
 }
 
 img.wh {
-    width: 100%;
-    height: 360px !important;
+    width: 480px !important;
+    height: 350px !important;
 }
 
 @import url(http://fonts.googleapis.com/css?family=Lato:400,700);
@@ -85,11 +85,11 @@ div {
 }
 
 .not-checked {
-    color: #9e9494;
+    color: #E2E1DE;
 }
 
 .checked {
-    color: #7b8b05
+    color: #FFC200;
 }
 
 .notliked {
@@ -168,6 +168,8 @@ div {
 
 .post-row {
     background-color: white;
+    width: 1300px;
+    height: 360px;
     color: #000;
     padding: 5px;
     margin-top: 20px;
@@ -352,6 +354,19 @@ div {
 }
 
 @media screen and (max-width: 767px) {
+    .s130 form .inner-form {
+        display: flex;
+        width: 100%;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -ms-flex-align: center;
+        align-items: center;
+        box-shadow: 0px 8px 20px 0px rgb(0 0 0 / 15%);
+        /* border-radius: 34px; */
+        overflow: hidden;
+        margin-left: 0;
+        margin-bottom: 30px;
+    }
     .s130 form .inner-form .input-field.first-wrap .svg-wrapper {
         min-width: 40px;
         display: -ms-flexbox;
@@ -372,6 +387,15 @@ div {
     }
     .s130 form .inner-form .input-field.second-wrap .btn-search {
         font-size: 13px;
+    }
+    .content-card {
+        margin-left: -20px;
+        margin-top: 25px;
+        width: 100% !important;
+    }
+    img.wh {
+        /* width: 100% !important; */
+        height: 300px !important;
     }
 }
 
@@ -422,25 +446,9 @@ a.page-numbers {
     background-color: #00ad5f;
 }
 
-
-/* last social */
-
-.content-center {
-    /* height: 100vh; */
-    /* display: flex;
-    justify-content: center;
-    align-items: center */
-}
-
 .ul-class {
     display: flex;
     list-style: none
-}
-
-@media (max-width:700px) {
-    .ul-class {
-        display: block
-    }
 }
 
 .ul-class li {
@@ -455,19 +463,10 @@ a.page-numbers {
     position: relative;
 }
 
-.ul-class li i {
-    transition: all 0.3s linear
-}
-
 .ul-class li:hover {
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(247, 245, 245);
     color: #fff;
     /* font-size: 17px */
-}
-
-.ul-class li:hover::after {
-    opacity: 1;
-    transform: scale(0.8)
 }
 
 .ul-class li::after {
@@ -482,48 +481,169 @@ a.page-numbers {
 }
 
 .ul-class li:nth-child(1) {
-    border: 2px solid #3b5998;
-}
-
-.ul-class li:nth-child(1)::after {
-    background-color: #3b5998;
-    color: #3b5998
-}
-
-.ul-class li:nth-child(1):hover {
-    background-color: #00ad5f;
+    border: 1px solid #3E3B3B;
+    color: #3E3B3B;
 }
 
 .ul-class li:nth-child(2) {
-    border: 2px solid #00aced;
-    color: #00aced
-}
-
-.ul-class li:nth-child(2)::after {
-    background-color: #00aced;
-    color: #00aced
+    border: 1px solid #3E3B3B;
+    color: #3E3B3B;
 }
 
 .ul-class li:nth-child(3) {
-    border: 2px solid #007bb6;
-    color: #007bb6
-}
-
-.ul-class li:nth-child(3)::after {
-    background-color: #007bb6;
-    color: #007bb6
+    border: 1px solid #3E3B3B;
+    color: #3E3B3B;
 }
 
 .ul-class li:nth-child(4) {
-    border: 2px solid #dd4b39;
-    color: #dd4b39
-}
-
-.ul-class li:nth-child(4)::after {
-    background-color: #dd4b39;
-    color: #dd4b39
+    border: 1px solid #3E3B3B;
+    color: #3E3B3B;
 }
 
 #fb-share {
     cursor: pointer;
+}
+
+.content-card {
+    margin-left: 30px;
+}
+
+.cta-button {
+    margin-left: -36px;
+    font-family: Gotham;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.card-post-content p {
+    font-family: Gotham;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.card-post-title {
+    font-family: Gotham;
+    font-weight: 700;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: left;
+    font-size: 20px;
+}
+
+.cta-btn-card {
+    background: #80BA3F;
+    color: white;
+    padding: 10px 16px;
+    font-size: 16px;
+    line-height: 1.3333333;
+    /* border-radius: 6px; */
+    margin: 30px;
+}
+
+.cta-title {
+    margin-top: 15px;
+}
+
+.review-count-card {
+    font-family: Gotham;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.ul-class li:hover,
+.ul-class li i:hover {
+    color: black;
+}
+
+a:hover {
+    color: black;
+}
+
+.post-row {
+    height: auto;
+}
+
+
+/* new card */
+
+.card-title {
+    font-family: Gotham;
+    font-weight: 700;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: left;
+    font-size: 20px;
+}
+
+.card-text {
+    /* font-family: Gotham !important; */
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin-top: 15px;
+}
+
+.card-section {
+    /* background-color: white; */
+}
+
+.card-block {
+    padding-top: 7px;
+}
+
+.card-container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.post-image-card {
+    width: 480px;
+    height: 313px;
+}
+
+.card-row {
+    padding: 12px;
+}
+
+.bookmark-icon-card {
+    margin-top: 100px !important;
+}
+
+
+/* responsive part */
+
+@media (max-width:700px) {
+    .bookmark-icon-card {
+        margin-top: 0 !important;
+    }
+}
+
+.btn-card {
+    font-family: Gotham !important;
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    line-height: 17px !important;
+    letter-spacing: 0em;
+    text-align: left n!important;
+    background: #80BA3F;
+    color: white;
+    padding: 10px !important;
+    ;
+}
+
+.btn-card:hover {
+    color: whitesmoke !important;
 }
