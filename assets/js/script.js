@@ -204,5 +204,27 @@ jQuery(document).ready(function($) {
     })
 
 
+    $(document).on('click', '.bookmark-btn-remove', function(e) {
+        // e.preventDefault();
+
+        location.replace = 'fb.com';
+
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 });

@@ -27,33 +27,53 @@ function search15()
     $selectValue = $_GET['select-listing-type'];
     echo $selectValue;
 
+    global $wp_query;
+    //get search values
+    // echo $wp_query->query_vars['search'];
+
+
+    $_GET['search'] = preg_replace('/[^\da-z ]/i', '', strtolower($_GET['search'])); // adding, modifying value
+    // unset($_GET['se']); // removing value
+
+    $searchTerm = normalize_whitespace(strtolower($_GET['search']));
+
+    // echo $searchTerm;
     ob_start();
 
 ?>
 
-
-
-    <div class="s130 col-sm-12">
-        <form action="/search-posts" method="get">
-            <div class="inner-form">
-                <div class="input-field first-wrap">
-                    <div class="svg-wrapper">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
-                        </svg>
+    <div class="container">
+        <div class="s130 col-sm-12">
+            <form action="/search-posts" method="get">
+                <div class="inner-form">
+                    <div class="input-field first-wrap">
+                        <div class="svg-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                            </svg>
+                        </div>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Search freelancers or jobs" name="search" id="" value="<?php echo $searchTerm; ?>">
                     </div>
-                    <input autocomplete="off" type="text" class="form-control" placeholder="Search freelancers or jobs" name="search" id="" value="<?php echo $_GET['search']; ?>">
+                    <div class="input-field second-wrap">
+                        <button type="submit" class="btn-search">Search</button>
+                    </div>
                 </div>
-                <div class="input-field second-wrap">
-                    <button type="submit" class="btn-search">Search</button>
-                </div>
-            </div>
 
-        </form>
+            </form>
+        </div>
     </div>
 
 
+
+
+
     <?php
+
+
+
+
+
+
     $output = ob_get_contents();
     ob_end_clean();
     return $output;
@@ -219,8 +239,8 @@ function searchResult()
                                 </div>
 
                                 <div class="col-md-2">
-                                    <a href="#" class="btn btn-card">Check it out</a>
-                                    <a href="#" class="btn  mt-3 btn-card">Check it out</a>
+                                    <a href="<?php echo $postLink; ?>" class="btn btn-card">Check it out</a>
+                                    <a href="#" class="btn mt-3 btn-card">Check it out</a>
 
                                 </div>
                             </div>
@@ -278,6 +298,15 @@ function searchResult()
 
 
 
+
+
+
+
+
+
+
+
+
 // results page shortcode
 add_shortcode('results', 'searchResult');
 
@@ -286,46 +315,28 @@ add_shortcode('results', 'searchResult');
 function popularSearchResults()
 {
     global $wpdb;
+    // global $wp_query;
     //get search values
-    $searchTerm = $_GET['search'];
+    // echo $wp_query->query_vars['search'];
 
-    $searchTermPlus = str_replace(' ', '+', $searchTerm);
-    // echo $searchTermPlus;
-
-
-    $searchCount = 1;
-    // $searchLink = get_search_query();
-
-
-    // the_permalink() . '?search=' . $searchTermPlus;
-
+    $searchTerm = normalize_whitespace(strtolower($_GET['search']));
+    $searchTermPlus = str_replace(' ', '+', preg_replace('/[^\da-z ]/i', '', strtolower($_GET['search'])));
     $searchLink = get_the_permalink() . '?search=' . $searchTermPlus;
     // echo $searchLink;
 
+    //select data from db by searchTerm
     $checkDuplicates = $wpdb->get_results($wpdb->prepare(
         "SELECT * FROM `wp_popular_searches` WHERE search_term = '$searchTerm'"
     ));
-    // $checkSearchTerm = array();
-    // array_push($checkSearchTerm, $checkDuplicates->search_term);
-
-
-
-    // echo '<pre>';
-    // print_r($checkDuplicates);
-    // count(array_keys($checkDuplicates));
-    // print_r(array_values($checkDuplicates));
-    // echo '</pre>';
 
     $totalNumber = 0;
     foreach ($checkDuplicates as $a) {
-        var_dump($a);
-        echo $a->search_term;
+        //getting total array key
         $totalNumber++;
     }
 
-    echo $totalNumber;
-
-
+    // echo $totalNumber;
+    //check empty search value
     if ($searchTerm != '') {
         if ($totalNumber == 0) {
 
@@ -333,16 +344,51 @@ function popularSearchResults()
 
                 $sql = "INSERT INTO `wp_popular_searches` (`search_term`, `search_term_link`) VALUES ('$searchTerm', '$searchLink') ";
                 $wpdb->query($sql);
+            }
+        }
+    }
 
-                // $duplicatesQuery = $wpdb->query($checkDuplicates);
-                // var_dump($checkDuplicates);
-                // $sql = "DELETE FROM `wp_like_info` WHERE  `user_name`= '$user_id' AND `post_id`= '$post_id' ";
+    //get all words from searchTerm string
+
+    $explodeSearchText = explode(' ', $searchTerm);
+    // print_r($explodeSearchText);
+
+
+    echo '<div class="container">';
+    $arrayUnique = array();
+    foreach ($explodeSearchText as $explodeSearchArray) {
+
+
+        $splitWordsDbSearch = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM `wp_popular_searches` WHERE search_term LIKE '%$explodeSearchArray%'"
+        ));
+
+
+        // print_r($splitWordsDbSearch);
+        // echo '</pre>';
+
+
+        foreach ($splitWordsDbSearch as $b) {
+
+            if (!in_array($b->search_term, $arrayUnique)) {
+                array_push($arrayUnique, $b->search_term);
             }
         }
     }
 
 
-    // echo $searchTerm;
+    foreach ($arrayUnique as $singleSearchItem) {
+
+        $singleSearchItemLink = get_the_permalink() . '?search=' . normalize_whitespace(str_replace(' ', '+', $singleSearchItem));
+        if ($singleSearchItem != $searchTerm) {
+
+            ?>
+
+            <a class="btn btn-dark text-white mt-3" href="<?php echo $singleSearchItemLink; ?>"><?php echo $singleSearchItem; ?></a>
+
+        <?php }
+    }
+    echo '</div>';
 }
 
 
@@ -607,7 +653,7 @@ function load_more_ajax()
             $postContent = get_the_content();
 
 
-            ?>
+        ?>
 
             <div class="col-sm-12 post-row">
                 <div class="">

@@ -72,7 +72,13 @@ function woo493_endpoint_contents()
                 "SELECT `post_id` FROM `wp_like_info` WHERE `user_name`= '$bookmark_user' AND `like_action`= 'like' "
             );
 
-
+            if (isset($_GET['remove-id'])) {
+                $wpdb;
+                $removed_id = $_GET['remove-id'];
+                $sql = "DELETE FROM `wp_like_info` WHERE  `user_name`= '$bookmark_user' AND `post_id`= '$removed_id' ";
+                echo '<script>location.replace("?");</script>';
+                $wpdb->query($sql);
+            }
 
             foreach ($bookmarks as $bookmark) {
 
@@ -86,6 +92,12 @@ function woo493_endpoint_contents()
                 // echo '<pre>';
                 // // print_r($all_posts);
                 // echo '</pre>';
+
+
+
+
+
+
                 foreach ($all_posts as $post) {
 
                     $post_id_number = $post->ID;
@@ -96,17 +108,9 @@ function woo493_endpoint_contents()
                     $link = get_permalink($post->ID);
 
 
-                    if (isset($_GET['remove-id'])) {
-                        $wpdb;
-                        $removed_id = $_GET['remove-id'];
-                        $sql = "DELETE FROM `wp_like_info` WHERE  `user_name`= '$bookmark_user' AND `post_id`= '$removed_id' ";
-                        $wpdb->query($sql);
-                    }
-
 
                     if ($post_id_number  == $bookmark->post_id) {
             ?>
-
                         <div class="col-md-4">
                             <div class="card main-card">
                                 <img src="<?php if (!empty($postImg)) {
@@ -117,16 +121,10 @@ function woo493_endpoint_contents()
                                 <div class="card-body main-card-body">
                                     <h5 class="card-title main-card-tittle"><a href="<?php echo $link; ?>"><?php echo $post_title_name ?></a></h5>
                                     <a href="<?php echo $link; ?>" class="btn btn-primary">View Listing</a>
-
-
-                                    <a name="remove-listing" href="?remove-id=<?php echo $post_id_number ?>" onclick="" class="btn btn-dark">Remove Listing</a>
-
+                                    <a name="remove-listing" href="?remove-id=<?php echo $post_id_number ?>" class="bookmark-btn-remove btn btn-dark">Remove Listing</a>
                                 </div>
                             </div>
                         </div>
-
-
-
     <?php }
                 }
             }
