@@ -69,11 +69,12 @@ jQuery(document).ready(function($) {
 
 
     //ajax load more on search results page
-    $('.posts_loadmore').on('click', function() {
+
+    $(document).on('click', '.posts_loadmore', function() {
         $load_more = $(this);
-
-        var listing_type = $(this).data['id']
-
+        var listing_type = $(this).attr("data-id");
+        var show_posts = $(this).attr("show-posts");
+        alert(show_posts);
         $.ajax({
             url: bookmark_ajax_script.ajaxurl,
 
@@ -83,8 +84,8 @@ jQuery(document).ready(function($) {
                 'query': bookmark_ajax_script.posts_vars,
                 'page': bookmark_ajax_script.current_page,
                 'search_term': bookmark_ajax_script.search_term,
-                'listing_type': bookmark_ajax_script.listing_type,
-                'posts_to_show': bookmark_ajax_script.posts_to_show,
+                'listing_type': listing_type,
+                'posts_to_show': show_posts,
 
             },
 
@@ -105,7 +106,7 @@ jQuery(document).ready(function($) {
                 } else {
                     $load_more.remove(); // if no data, remove the button as well
                     $('.no-posts').append('No Posts Available');
-                    console.log(listing_type);
+
 
 
                 }

@@ -96,7 +96,7 @@ function searchResult493($atts)
 {
 
     ob_start();
-
+    global $totalPostsToShow;
 
     $shortcodeArray = shortcode_atts(array(
         'result_page' => 'main',
@@ -289,11 +289,10 @@ function searchResult493($atts)
             <?php }
 
             echo '</div>';
-            if ($new_query->max_num_pages > 1) {
-                echo '<div class="ajax_loaded_posts"></div>';
-                echo '<div class="posts_loadmore" data-id="' . $shortcodeArray['listing_type'] . '">More posts</div>';
-                echo '<div class="no-posts text-center text-primary m-4"></div>';
-            }
+            if ($new_query->max_num_pages > 1) { ?>
+                <div class="ajax_loaded_posts"></div>';
+                <div class="posts_loadmore" show-posts="<?php echo $totalPostsToShow; ?>" data-id="<?php echo $shortcodeArray['listing_type']; ?>">More posts</div>
+            <?php }
         }
 
         wp_reset_postdata();
@@ -418,8 +417,8 @@ function search493_enqueue()
 {
     $enq = plugin_dir_url(__FILE__) . 'assets/';
     global $new_query;
-    global $listingTypes;
-    global $totalPostsToShow;
+
+
 
     $search = $_GET['search'];
 
@@ -441,9 +440,7 @@ function search493_enqueue()
             'posts_vars' => json_encode($new_query->query_vars),
             'current_page' => get_query_var('paged') ? get_query_var('paged') : 1,
             'max_pages' => $new_query->max_num_pages,
-            'search_term' => $search,
-            'listing_type' =>  $listingTypes,
-            'posts_to_show' => $totalPostsToShow
+            'search_term' => $search
 
         )
     );
@@ -543,7 +540,8 @@ function load_more_ajax()
     $args = json_decode(stripslashes($_POST['query']), true);
     $args['paged'] = $_POST['page'] + 1; // we need next page to be loaded
     $args['search_term'] = $_POST['search_term']; // we need next page to be loaded
-    $args['listing-type'] = $_POST['posts_to_show'];
+    $args['listing-type'] = $_POST['listing_type'];
+    $args['show-posts'] = $_POST['posts_to_show'];
 
     print_r($args);
 
@@ -553,12 +551,39 @@ function load_more_ajax()
     // it is always better to use WP_Query but not here
     // $posts_qry = new WP_Query($args);
 
-    $args1 = array(
-        'post_type' => 'job_listing',
-        's' => $args['search_term'],
-        'posts_per_page' => 3,
-        'paged'    => $args['paged'],
-    );
+
+    // $args1 = array(
+    //     'post_type' => 'job_listing',
+    //     's' => $args['search_term'],
+    //     'posts_per_page' => $args['show-posts'],
+    //     'paged'    => $args['paged'],
+    // );
+
+
+    $args1 = array();
+
+    if ($args['listing-type'] == 'freelancers' || $args['listing-type'] == 'services') {
+
+        $args1 = array(
+            "post_type" => "job_listing",
+            "s" => $args['search_term'],
+            'posts_per_page' => $args['show-posts'],
+            "paged" => $args['paged'],
+            'meta_key' => '_case27_listing_type',
+            'meta_value' => $args['listing_type'],
+            'meta_compare' => '='
+
+        );
+    }
+    if ($args['listing-type'] == 'all') {
+        $args1 = array(
+            "post_type" => "job_listing",
+            "s" => $args['search_term'],
+            'posts_per_page' => $args['show-posts'],
+            "paged" => $args['paged'],
+        );
+    }
+
 
     $loop = new WP_Query($args1);
 
