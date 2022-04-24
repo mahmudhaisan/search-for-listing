@@ -20,10 +20,10 @@ if (!defined('ABSPATH')) {
     die;
 }
 
-// search fumctionality
-function search15()
-{
 
+// search fumctionality
+function searchForm493($atts)
+{
     $selectValue = $_GET['select-listing-type'];
     echo $selectValue;
 
@@ -37,41 +37,39 @@ function search15()
 
     $searchTerm = normalize_whitespace(strtolower($_GET['search']));
 
+    $shortcodeArray = shortcode_atts(array(
+        'redirect' => 'search-posts'
+
+    ), $atts);
+
+    // print_r($shortcodeArray);
+
     // echo $searchTerm;
     ob_start();
 
 ?>
 
-    <div class="container">
-        <div class="s130 col-sm-12">
-            <form action="/search-posts" method="get">
-                <div class="inner-form">
-                    <div class="input-field first-wrap">
-                        <div class="svg-wrapper">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
-                            </svg>
-                        </div>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Search freelancers or jobs" name="search" id="" value="<?php echo $searchTerm; ?>">
+    <div class="s130 col-sm-12">
+        <form action="/<?php echo $shortcodeArray['redirect']; ?>" method="get">
+            <div class="inner-form">
+                <div class="input-field first-wrap">
+                    <div class="svg-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                        </svg>
                     </div>
-                    <div class="input-field second-wrap">
-                        <button type="submit" class="btn-search">Search</button>
-                    </div>
+                    <input autocomplete="off" type="text" class="form-control" placeholder="Search freelancers or jobs" name="search" id="" value="<?php echo $searchTerm; ?>">
                 </div>
+                <div class="input-field second-wrap">
+                    <button type="submit" class="btn-search">Search</button>
+                </div>
+            </div>
 
-            </form>
-        </div>
+        </form>
     </div>
 
 
-
-
-
     <?php
-
-
-
-
 
 
     $output = ob_get_contents();
@@ -81,35 +79,74 @@ function search15()
 
 
 //add short code for search functionality
-add_shortcode('search', 'search15');
+add_shortcode('searchForm493', 'searchForm493');
+
+
+
+
+
+
+
+
 
 
 
 //search page functionality
-function searchResult()
+function searchResult493($atts)
 {
+
     ob_start();
+
+
+    $shortcodeArray = shortcode_atts(array(
+        'result_page' => 'main',
+        'posts_per_page' => 5,
+        'listing_type' => 'all'
+
+    ), $atts);
+
+
+
+    $totalPostsToShow = $shortcodeArray['posts_per_page'];
+    $listingTypes = $shortcodeArray['listing_type'];
+
+
     //check if search term in search bar and not empty
+
     if (isset($_GET['search']) && !empty($_GET['search'])) {
-
         $search = $_GET['search'];
-
         $paged = get_query_var('paged') ? get_query_var('paged') : 1;
 
 
+        if ($shortcodeArray['listing_type'] == 'freelancers' || $shortcodeArray['listing_type'] == 'services') {
 
-        $args = array(
-            "post_type" => "job_listing",
-            "s" => $search,
-            'posts_per_page' => 2,
-            "paged" => $paged
-            // 'meta_key' => '_case27_listing_type',
-            // 'meta_value' => $selectValue,
-            // 'meta_compare' => '='
+            $args = array(
+                "post_type" => "job_listing",
+                "s" => $search,
+                'posts_per_page' => $totalPostsToShow,
+                "paged" => $paged,
+                'meta_key' => '_case27_listing_type',
+                'meta_value' => $shortcodeArray['listing_type'],
+                'meta_compare' => '='
 
-        );
+            );
+        }
+        if ($shortcodeArray['listing_type'] == 'all') {
+            $args = array(
+                "post_type" => "job_listing",
+                "s" => $search,
+                'posts_per_page' => $totalPostsToShow,
+                "paged" => $paged,
+            );
+        }
+
+
+
         $new_query = new WP_Query($args);
         // global $new_query;
+        // echo '<pre>';
+        // print_r($new_query);
+        // echo '</pre>';
         $currentPostId = $new_query->ID;
 
 
@@ -254,7 +291,7 @@ function searchResult()
             echo '</div>';
             if ($new_query->max_num_pages > 1) {
                 echo '<div class="ajax_loaded_posts"></div>';
-                echo '<div class="posts_loadmore">More posts</div>';
+                echo '<div class="posts_loadmore" data-id="' . $shortcodeArray['listing_type'] . '">More posts</div>';
                 echo '<div class="no-posts text-center text-primary m-4"></div>';
             }
         }
@@ -277,38 +314,9 @@ function searchResult()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // results page shortcode
-add_shortcode('results', 'searchResult');
+add_shortcode('search-results-page', 'searchResult493');
+
 
 
 
@@ -330,6 +338,9 @@ function popularSearchResults()
     ));
 
     $totalNumber = 0;
+
+    ob_start();
+
     foreach ($checkDuplicates as $a) {
         //getting total array key
         $totalNumber++;
@@ -389,6 +400,10 @@ function popularSearchResults()
         <?php }
     }
     echo '</div>';
+
+    $output = ob_get_contents();
+    ob_end_clean();
+    return $output;
 }
 
 
@@ -398,79 +413,13 @@ add_shortcode('popular-search-results', 'popularSearchResults');
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// working but dont know how
-
-// function my_pagination_rewrite()
-// {
-//     $search = $_GET['search'];
-//     $paged = (isset($my_query_array['paged']) && !empty($my_query_array['paged'])) ? $my_query_array['paged'] : 1;
-//     add_rewrite_rule('search/page/?([0-9]{1,})/?$', "index.php?post_type=job_listing&paged=$paged&search=$search", 'top');
-// }
-// add_action('init', 'my_pagination_rewrite');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //enqueue files
 function search493_enqueue()
 {
     $enq = plugin_dir_url(__FILE__) . 'assets/';
     global $new_query;
+    global $listingTypes;
+    global $totalPostsToShow;
 
     $search = $_GET['search'];
 
@@ -492,13 +441,21 @@ function search493_enqueue()
             'posts_vars' => json_encode($new_query->query_vars),
             'current_page' => get_query_var('paged') ? get_query_var('paged') : 1,
             'max_pages' => $new_query->max_num_pages,
-            'search_term' => $search
+            'search_term' => $search,
+            'listing_type' =>  $listingTypes,
+            'posts_to_show' => $totalPostsToShow
 
         )
     );
 }
 
 add_action('wp_enqueue_scripts', 'search493_enqueue');
+
+
+
+
+
+
 
 
 
@@ -572,7 +529,6 @@ function like_count($post_id)
 }
 
 
-
 add_action('wp_ajax_load_more_ajax', 'load_more_ajax');
 add_action('wp_ajax_nopriv_load_more_ajax', 'load_more_ajax');
 
@@ -583,10 +539,15 @@ add_action('wp_ajax_nopriv_load_more_ajax', 'load_more_ajax');
 
 function load_more_ajax()
 {
-
+    // global $totalPostsToShow;
     $args = json_decode(stripslashes($_POST['query']), true);
     $args['paged'] = $_POST['page'] + 1; // we need next page to be loaded
     $args['search_term'] = $_POST['search_term']; // we need next page to be loaded
+    $args['listing-type'] = $_POST['posts_to_show'];
+
+    print_r($args);
+
+
 
 
     // it is always better to use WP_Query but not here
@@ -595,7 +556,7 @@ function load_more_ajax()
     $args1 = array(
         'post_type' => 'job_listing',
         's' => $args['search_term'],
-        'posts_per_page' => 2,
+        'posts_per_page' => 3,
         'paged'    => $args['paged'],
     );
 
@@ -655,132 +616,120 @@ function load_more_ajax()
 
         ?>
 
-            <div class="col-sm-12 post-row">
-                <div class="">
-                    <div class="row my-auto">
-                        <div class="col-md-5 col-sm-12">
-                            <!-- show post image -->
-                            <img class="wh" src="<?php if (!empty($postImage)) {
-                                                        the_field('_job_cover', $loop->ID);
-                                                    } else {
-                                                        echo $defaultImg;
-                                                    } ?>" alt="">
-                        </div>
 
-                        <div class="col-md-5 col-sm-12 content-card card-post-content">
-                            <p class="cta-title">
-                                <!-- post title -->
-                                <a class="card-post-title" href="<?php echo $postLink; ?>"> <?php the_title(); ?> </a>
-                            </p>
-                            <div class="">
-                                <!-- post content -->
-                                <p class="">
-                                    <?php echo mb_strimwidth($postContent, 0, 200, '...');
-                                    ?>
-                                </p>
-                                <br>
-
-
-                                <div class="">
-                                    <div>
-                                        <?php
-
-
-                                        // show available star ratings
-                                        if ($averageRating == 1 && $averageRating <= 1.20) {
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                        }
-
-                                        if ($averageRating > 1.20 && $averageRating < 1.75) {
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fas fa-star-half-alt checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                        }
-                                        if ($averageRating >= 1.75 && $averageRating <= 2.20) {
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                        }
-                                        if ($averageRating > 2.20 && $averageRating < 2.75) {
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fas fa-star-half-alt checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                        }
-                                        if ($averageRating >= 2.75 && $averageRating <= 3.20) {
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                        }
-                                        if ($averageRating > 3.20 && $averageRating < 3.75) {
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fas fa-star-half-alt checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                        } elseif ($averageRating >= 3.75 && $averageRating <= 4.20) {
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star not-checked"></span>';
-                                        }
-                                        if ($averageRating > 4.20 && $averageRating < 4.75) {
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fas fa-star-half-alt checked"></span>';
-                                        }
-                                        if ($averageRating >= 4.75 && $averageRating <= 5) {
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                            echo '<span class="fa fa-star checked"></span>';
-                                        }
-
-                                        ?>
-                                        <span class="p-1">
-                                            <?php
-
-                                            if ($reviewCount > 0) {
-                                                echo $reviewCount . ' Reviews';
-                                            } ?>
-                                        </span>
-                                    </div>
-
-
-
-                                    <?php
-                                    require(plugin_dir_path(__FILE__) . 'includes/bookmark-meta.php');
-
-                                    ?>
-
-                                </div>
+            <section class="card-section">
+                <div class="container card-container py-3">
+                    <div class="card">
+                        <div class="row card-row">
+                            <div class="col-md-5 align-items-center">
+                                <img class="w-100 post-image-card" src="<?php if (!empty($postImage)) {
+                                                                            the_field('_job_cover', $loop->ID);
+                                                                        } else {
+                                                                            echo $defaultImg;
+                                                                        } ?>" alt="">
                             </div>
 
-                        </div>
+                            <div class="col-md-5 px-3 align-items-center">
+                                <div class="card-block px-3">
+                                    <!-- <h4 class="card-title">Lorem ipsum dolor sit amet</h4> -->
+                                    <a class="card-title" href="<?php echo $postLink; ?>"> <?php the_title(); ?> </a>
 
-                        <div class="col-md-2 cta-button">
-                            <!-- check this functionality -->
-                            <a href="#" id="test" class="btn cta-btn-card">Check it out</a>
 
+                                    <p class="card-text">
+                                        <?php echo mb_strimwidth($postContent, 0, 300, '...');
+                                        ?>
+                                    </p>
+                                    <?php
+
+                                    // show available star ratings
+                                    if ($averageRating == 1 && $averageRating <= 1.20) {
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                    }
+                                    if ($averageRating > 1.20 && $averageRating < 1.75) {
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fas fa-star-half-alt checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                    }
+                                    if ($averageRating >= 1.75 && $averageRating <= 2.20) {
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                    }
+                                    if ($averageRating > 2.20 && $averageRating < 2.75) {
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fas fa-star-half-alt checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                    }
+                                    if ($averageRating >= 2.75 && $averageRating <= 3.20) {
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                    }
+                                    if ($averageRating > 3.20 && $averageRating < 3.75) {
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fas fa-star-half-alt checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                    } elseif ($averageRating >= 3.75 && $averageRating <= 4.20) {
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star not-checked"></span>';
+                                    }
+                                    if ($averageRating > 4.20 && $averageRating < 4.75) {
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fas fa-star-half-alt checked"></span>';
+                                    }
+                                    if ($averageRating >= 4.75 && $averageRating <= 5) {
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                        echo '<span class="fa fa-star checked"></span>';
+                                    } ?>
+                                    <span class="p-1">
+                                        <?php
+
+                                        if ($reviewCount > 0) {
+                                            echo $reviewCount . ' Reviews';
+                                        } ?>
+                                    </span>
+                                </div>
+
+
+                                <?php
+                                require(plugin_dir_path(__FILE__) . 'includes/bookmark-meta.php');
+
+                                ?>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <a href="<?php echo $postLink; ?>" class="btn btn-card">Check it out</a>
+                                <a href="#" class="btn mt-3 btn-card">Check it out</a>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
 <?php }
 
