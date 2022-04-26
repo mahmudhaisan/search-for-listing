@@ -625,6 +625,12 @@ a:hover {
 
 /* responsive part */
 
+@media(max-width:700px) {
+    .bookmark {
+        margin: 5px;
+    }
+}
+
 @media (max-width:700px) {
     .bookmark-icon-card {
         margin-top: 0 !important;

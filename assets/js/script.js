@@ -61,8 +61,6 @@ jQuery(document).ready(function($) {
         })
 
 
-
-
     });
 
 
@@ -74,7 +72,6 @@ jQuery(document).ready(function($) {
         $load_more = $(this);
         var listing_type = $(this).attr("data-id");
         var show_posts = $(this).attr("show-posts");
-        alert(show_posts);
         $.ajax({
             url: bookmark_ajax_script.ajaxurl,
 
@@ -90,7 +87,6 @@ jQuery(document).ready(function($) {
             },
 
             success: function(data) {
-                console.log(data);
                 if (data) {
                     $('.ajax_loaded_posts').append(data); // insert new posts
                     bookmark_ajax_script.current_page++;
