@@ -1,0 +1,202 @@
+<?php
+
+
+add_action('wp_ajax_load_more_ajax', 'load_more_ajax');
+add_action('wp_ajax_nopriv_load_more_ajax', 'load_more_ajax');
+
+
+
+function load_more_ajax()
+{
+    // global $totalPostsToShow;
+    $args = json_decode(stripslashes($_POST['query']), true);
+    $args['paged'] = $_POST['page'] + 1; // we need next page to be loaded
+    $args['search_term'] = $_POST['search_term']; // we need next page to be loaded
+    $args['listing-type'] = $_POST['listing_type'];
+    $args['show-posts'] = $_POST['posts_to_show'];
+
+
+    $args1 = array();
+
+    if ($args['listing-type'] == 'freelancers' || $args['listing-type'] == 'services') {
+
+        $args1 = array(
+            "post_type" => "job_listing",
+            "s" => $args['search_term'],
+            'posts_per_page' => $args['show-posts'],
+            "paged" => $args['paged'],
+            'meta_key' => '_case27_listing_type',
+            'meta_value' => $args['listing_type'],
+            'meta_compare' => '='
+
+        );
+    }
+
+
+    if ($args['listing-type'] == 'all') {
+        $args1 = array(
+            "post_type" => "job_listing",
+            "s" => $args['search_term'],
+            'posts_per_page' => $args['show-posts'],
+            "paged" => $args['paged'],
+        );
+    }
+
+
+    if ($args['listing-type'] == 'blog') {
+        $args1 = array(
+            "post_type" => "post",
+            "s" => $args['search_term'],
+            'posts_per_page' => $args['show-posts'],
+            "paged" => $args['paged'],
+        );
+    }
+
+
+    $loop = new WP_Query($args1);
+
+
+    // if ($args['listing-type'] == 'blog') {
+    //     // echo '<div class="row">';
+    // }
+    if ($loop->have_posts()) { ?>
+
+
+
+        <?php
+        //search results container start
+        // echo '<div class="container">';
+        while ($loop->have_posts()) {
+
+            // $meta = get_post_meta($currentPostId);
+            $loop->the_post();
+
+            //posts info
+            $currentPostId = get_the_ID();
+            $postLink = get_the_guid();
+            $defaultImg = 'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png';
+            $postImage = get_field('_job_cover', $loop->ID);
+            $reviewCount = get_field('_case27_review_count', $currentPostId);
+            $averageRating = get_field('_case27_average_rating', $currentPostId) / 2;
+            $listingType = get_field('_case27_listing_type', $currentPostId);
+
+
+
+            global $wpdb;
+            //getting current user
+            $current_user = wp_get_current_user()->user_login;
+            //getting current post id
+            $current_post_id = $currentPostId;
+
+
+            // users like query on database
+
+            $like_query = $wpdb->get_results($wpdb->prepare(
+                "SELECT * FROM `wp_like_info` WHERE user_name = '$current_user' AND post_id = '$current_post_id'"
+            ));
+
+            // echo ($wpdb->num_rows);
+            $like_status = $wpdb->num_rows;
+            //total like count query
+
+            $like_count_query = $wpdb->get_var($wpdb->prepare(
+                "SELECT COUNT(*) FROM `wp_like_info` WHERE post_id = '$current_post_id' AND like_action = 'like' "
+            ));
+
+
+            // print_r($like_count_query);
+            $total_likes = $like_count_query;
+
+
+            $postContent = get_the_content();
+
+            // $blogPostContent = the_content();
+            if ($args['listing-type'] == 'blog') {
+
+
+        ?>
+
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" src="<?php the_post_thumbnail_url(); ?>">
+                        <div class=" card-body">
+                            <a href="<?php echo $postLink; ?>" class="card-title"><?php the_title(); ?></a>
+                            <p class="card-text"><?php echo mb_strimwidth($postContent, 0, 300, '...'); ?></p>
+                            <a href="<?php echo $postLink; ?>" class="">Go somewhere </a>
+                        </div>
+                    </div>
+                </div>
+
+            <?php } else { ?>
+
+                <section class="card-section">
+                    <div class="container card-container py-3">
+                        <div class="card">
+                            <div class="col-md-5 align-items-center">
+                                <img class="w-100 post-image-card" src="<?php if (!empty($postImage)) {
+                                                                            the_field('_job_cover', $loop->ID);
+                                                                        } else {
+                                                                            echo $defaultImg;
+                                                                        } ?>" alt="">
+                            </div>
+
+                            <div class="col-md-5 px-3 align-items-center">
+                                <div class="card-block px-3">
+                                    <!-- <h4 class="card-title">Lorem ipsum dolor sit amet</h4> -->
+                                    <a class="card-title" href="<?php echo $postLink; ?>"> <?php the_title(); ?> </a>
+
+
+                                    <p class="card-text">
+                                        <?php echo mb_strimwidth($postContent, 0, 300, '...');
+                                        ?>
+                                    </p>
+                                    <?php
+
+
+                                    require(PLUGINS_PATH . 'includes/review-calc.php');
+                                    ?>
+                                    <span class="p-1">
+                                        <?php
+
+                                        if ($reviewCount > 0) {
+                                            echo $reviewCount . ' Reviews';
+                                        } ?>
+                                    </span>
+                                </div>
+
+
+                                <?php
+                                require(PLUGINS_PATH . 'includes/bookmark-meta.php');
+
+                                ?>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <a href="<?php echo $postLink; ?>" class="btn btn-card">Check it out</a>
+                                <a href="#" class="btn mt-3 btn-card">Check it out</a>
+
+                            </div>
+
+
+
+                    <?php }
+            }
+            if ($args['listing-type'] == 'blog') {
+                echo '</div>';
+            } ?>
+                        </div>
+                    </div>
+                    </div>
+                </section>
+        <?php echo '</div>';
+
+
+        wp_reset_postdata();
+
+        // Reset Query
+        wp_reset_query();
+    }
+    wp_die();
+}
