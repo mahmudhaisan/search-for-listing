@@ -45,7 +45,7 @@ ob_start();
 <div class="mt-5 bookmark-icon-card">
     <div class="content-center">
         <ul class="ul-class">
-            <li id="bookmark-click" <?php if ($like_status == 0) : ?> class='fa fa-heart-o like-btn bookmarks-info' <?php else : ?> class='fa fa-heart like-btn bookmarks-info bg-icon-selected' <?php endif ?> data-id='<?php echo $current_post_id; ?>' user_id='<?php echo $current_user; ?>'></li>
+            <li id="bookmark-click" url-id="<?php echo get_home_url(); ?>" <?php if ($like_status == 0) : ?> class='fa fa-heart-o like-btn bookmarks-info' <?php else : ?> class='fa fa-heart like-btn bookmarks-info bg-icon-selected' <?php endif ?> data-id='<?php echo $current_post_id; ?>' user_id='<?php echo $current_user; ?>'></li>
             <li id="bookmark-count" data-id="<?php echo ($total_likes); ?>" class="fa like-count bookmarks-info">
                 <?php echo ($total_likes); ?>
             </li>

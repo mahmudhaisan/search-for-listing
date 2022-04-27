@@ -8,6 +8,8 @@ jQuery(document).ready(function($) {
         var post_id = $(this).data('id');
         var user_id = $(this).attr('user_id');
         var total_like = $("#bookmark-count").data('id');
+        var site_url = site_url;
+        var site_base = $(this).attr("url-id");
         $clicked_btn = $(this);
 
         if ($clicked_btn.hasClass('fa-heart-o')) {
@@ -51,7 +53,8 @@ jQuery(document).ready(function($) {
 
                     }
                 } else {
-                    window.location.href = 'http://localhost:10003/my-account-2/';
+
+                    window.location.href = site_base + '/my-account-2/';
                     $clicked_btn.siblings('li.like-count').text(like_total);
                 }
 
@@ -145,14 +148,14 @@ jQuery(document).ready(function($) {
                         e.preventDefault();
 
 
-                        window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=fb.com';
+                        window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + data;
 
                     });
                     $('#fb-share').on('click', function(e) {
                         e.preventDefault();
 
 
-                        window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=fb.com';
+                        window.location.href = 'https://www.facebook.com/sharer/sharer.php?u=' + data;
 
                     });
                     $('#twitter-share').on('click', function(e) {
@@ -164,7 +167,7 @@ jQuery(document).ready(function($) {
                     $('#linkedin-share').on('click', function(e) {
                         e.preventDefault();
 
-                        window.location.href = 'https://www.linkedin.com/sharing/share-offsite/?url=https://stackoverflow.com/questions/33426752/linkedin-share-post-url';
+                        window.location.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + data;
                     });
 
 

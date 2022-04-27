@@ -29,7 +29,8 @@ function search493_enqueue()
             'posts_vars' => json_encode($new_query->query_vars),
             'current_page' => get_query_var('paged') ? get_query_var('paged') : 1,
             'max_pages' => $new_query->max_num_pages,
-            'search_term' => $search
+            'search_term' => $search,
+            'site_url' => site_url()
 
         )
     );

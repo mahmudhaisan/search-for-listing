@@ -63,9 +63,7 @@ function searchResult493($atts)
 
         $new_query = new WP_Query($args);
         $currentPostId = $new_query->ID;
-        if ($shortcodeArray['listing_type'] == 'blog') {
-            // echo '<div class="row">';
-        }
+
 
         if ($new_query->have_posts()) {
 
@@ -96,20 +94,20 @@ function searchResult493($atts)
 
 
                     <div class="col-md-4">
-                        <div class="card">
-                            <img class="card-img-top" src="<?php the_post_thumbnail_url(); ?>">
-                            <div class=" card-body">
+                        <div class="card card-full">
+                            <img class="card-img-top" src="<?php if (!empty(get_the_post_thumbnail_url())) {
+                                                                the_post_thumbnail_url();
+                                                            } else {
+                                                                echo $defaultImg;
+                                                            } ?>">
+                            <div class=" card-body d-flex flex-column">
                                 <a href="<?php echo $postLink; ?>" class="card-title"><?php the_title(); ?></a>
-                                <p class="card-text"><?php echo mb_strimwidth($postContent, 0, 300, '...'); ?></p>
-                                <a href="<?php echo $postLink; ?>" class="">Go somewhere </a>
+                                <h3 class="card-text"><?php echo mb_strimwidth($postContent, 0, 100, '...'); ?></h3>
+                                <a class="mt-auto align-self-start" href="">Go somewhere</a>
+
                             </div>
                         </div>
                     </div>
-
-
-
-
-
 
 
                 <?php } else {
@@ -117,10 +115,6 @@ function searchResult493($atts)
 
 
                 ?>
-
-
-
-
 
 
                     <section class="card-section">
@@ -135,7 +129,7 @@ function searchResult493($atts)
                                                                                 } ?>" alt="">
                                     </div>
 
-                                    <div class="col-md-5 px-3 align-items-center">
+                                    <div class="col-md-5 px-3 align-items-center  middle-card">
                                         <div class="card-block px-3">
                                             <!-- <h4 class="card-title">Lorem ipsum dolor sit amet</h4> -->
                                             <a class="card-title" href="<?php echo $postLink; ?>"> <?php the_title(); ?> </a>
@@ -190,12 +184,7 @@ function searchResult493($atts)
 
 
 
-
-
-
         if ($new_query->max_num_pages > 1) { ?>
-
-            </div>
             <div class="posts_loadmore" show-posts="<?php echo $totalPostsToShow; ?>" data-id="<?php echo $shortcodeArray['listing_type']; ?>">More posts</div>
             <div class="no-posts"></div>
 
@@ -206,11 +195,76 @@ function searchResult493($atts)
         wp_reset_postdata();
     }
 
-    if ($_GET['search'] == '') {
-        echo 'please search by a keyword';
-    }
 
-    echo '</div>';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     $output = ob_get_contents();
     ob_end_clean();

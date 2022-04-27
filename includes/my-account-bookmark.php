@@ -112,19 +112,48 @@ function woo493_endpoint_contents()
                     if ($post_id_number  == $bookmark->post_id) {
             ?>
                         <div class="col-md-4">
-                            <div class="card main-card">
-                                <img src="<?php if (!empty($postImg)) {
-                                                echo $postImg;
-                                            } else {
-                                                echo $defaultImg;
-                                            } ?>" class="card-img-top card-image-round" alt="...">
-                                <div class="card-body main-card-body">
+                            <div class="card card main-card">
+                                <img class="card-img-top" src="<?php if (!empty($postImg)) {
+                                                                    echo $postImg;
+                                                                } else {
+                                                                    echo $defaultImg;
+                                                                } ?>" class="card-img-top card-image-round" alt="...">
+                                <div class="card-body card-body flex-column">
                                     <h5 class="card-title main-card-tittle"><a href="<?php echo $link; ?>"><?php echo $post_title_name ?></a></h5>
-                                    <a href="<?php echo $link; ?>" class="btn btn-primary">View Listing</a>
-                                    <a name="remove-listing" href="?remove-id=<?php echo $post_id_number ?>" class="bookmark-btn-remove btn btn-dark">Remove Listing</a>
+
+                                    <div class="row">
+                                        <div class="col-md-6 show-post">
+                                            <div class="">
+                                                <i class="fa fa-eye"></i>
+                                            </div>
+                                            <div>
+                                                <a href="<?php echo $link; ?>" class="">View Listing</a>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-md-6 remove-post">
+                                            <div>
+                                                <i class="fa fa-trash"></i>
+                                            </div>
+                                            <div>
+                                                <a name="remove -listing" href="?remove-id=<?php echo $post_id_number ?>" class="bookmark-btn-remove">Remove Listing</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
+
+
+
+
+
+
+
+
     <?php }
                 }
             }

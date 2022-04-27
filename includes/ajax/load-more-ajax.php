@@ -18,7 +18,13 @@ function load_more_ajax()
 
     $args1 = array();
 
-    if ($args['listing-type'] == 'freelancers' || $args['listing-type'] == 'services') {
+
+
+    // print_r($args);
+    // if (!empty($args['search_term'])) {
+
+
+    if ($args['listing-type'] == 'freelancers') {
 
         $args1 = array(
             "post_type" => "job_listing",
@@ -26,11 +32,28 @@ function load_more_ajax()
             'posts_per_page' => $args['show-posts'],
             "paged" => $args['paged'],
             'meta_key' => '_case27_listing_type',
-            'meta_value' => $args['listing_type'],
+            'meta_value' => 'freelancers',
             'meta_compare' => '='
 
         );
     }
+
+
+
+    if ($args['listing-type'] == 'services') {
+
+        $args1 = array(
+            "post_type" => "job_listing",
+            "s" => $args['search_term'],
+            'posts_per_page' => $args['show-posts'],
+            "paged" => $args['paged'],
+            'meta_key' => '_case27_listing_type',
+            'meta_value' => 'services',
+            'meta_compare' => '='
+
+        );
+    }
+
 
 
     if ($args['listing-type'] == 'all') {
@@ -117,13 +140,19 @@ function load_more_ajax()
         ?>
 
 
+
                 <div class="col-md-4">
-                    <div class="card">
-                        <img class="card-img-top" src="<?php the_post_thumbnail_url(); ?>">
-                        <div class=" card-body">
+                    <div class="card card-full">
+                        <img class="card-img-top" src="<?php if (!empty(get_the_post_thumbnail_url())) {
+                                                            the_post_thumbnail_url();
+                                                        } else {
+                                                            echo $defaultImg;
+                                                        } ?>">
+                        <div class=" card-body flex-column">
                             <a href="<?php echo $postLink; ?>" class="card-title"><?php the_title(); ?></a>
-                            <p class="card-text"><?php echo mb_strimwidth($postContent, 0, 300, '...'); ?></p>
-                            <a href="<?php echo $postLink; ?>" class="">Go somewhere </a>
+                            <h3 class="card-text"><?php echo mb_strimwidth($postContent, 0, 100, '...'); ?></h3>
+                            <a class="mt-auto align-self-start" href="">Go somewhere</a>
+
                         </div>
                     </div>
                 </div>
@@ -133,64 +162,72 @@ function load_more_ajax()
                 <section class="card-section">
                     <div class="container card-container py-3">
                         <div class="card">
-                            <div class="col-md-5 align-items-center">
-                                <img class="w-100 post-image-card" src="<?php if (!empty($postImage)) {
-                                                                            the_field('_job_cover', $loop->ID);
-                                                                        } else {
-                                                                            echo $defaultImg;
-                                                                        } ?>" alt="">
-                            </div>
 
-                            <div class="col-md-5 px-3 align-items-center">
-                                <div class="card-block px-3">
-                                    <!-- <h4 class="card-title">Lorem ipsum dolor sit amet</h4> -->
-                                    <a class="card-title" href="<?php echo $postLink; ?>"> <?php the_title(); ?> </a>
+                            <div class="row card-row">
 
 
-                                    <p class="card-text">
-                                        <?php echo mb_strimwidth($postContent, 0, 300, '...');
-                                        ?>
-                                    </p>
-                                    <?php
 
 
-                                    require(PLUGINS_PATH . 'includes/review-calc.php');
-                                    ?>
-                                    <span class="p-1">
-                                        <?php
 
-                                        if ($reviewCount > 0) {
-                                            echo $reviewCount . ' Reviews';
-                                        } ?>
-                                    </span>
+                                <div class="col-md-5 align-items-center middle-card">
+                                    <img class="w-100 post-image-card" src="<?php if (!empty($postImage)) {
+                                                                                the_field('_job_cover', $loop->ID);
+                                                                            } else {
+                                                                                echo $defaultImg;
+                                                                            } ?>" alt="">
                                 </div>
 
+                                <div class="col-md-5 px-3 align-items-center">
+                                    <div class="card-block px-3">
+                                        <!-- <h4 class="card-title">Lorem ipsum dolor sit amet</h4> -->
+                                        <a class="card-title" href="<?php echo $postLink; ?>"> <?php the_title(); ?> </a>
 
-                                <?php
-                                require(PLUGINS_PATH . 'includes/bookmark-meta.php');
 
-                                ?>
+                                        <p class="card-text">
+                                            <?php echo mb_strimwidth($postContent, 0, 300, '...');
+                                            ?>
+                                        </p>
+                                        <?php
 
+
+                                        require(PLUGINS_PATH . 'includes/review-calc.php');
+                                        ?>
+                                        <span class="p-1">
+                                            <?php
+
+                                            if ($reviewCount > 0) {
+                                                echo $reviewCount . ' Reviews';
+                                            } ?>
+                                        </span>
+                                    </div>
+
+
+                                    <?php
+                                    require(PLUGINS_PATH . 'includes/bookmark-meta.php');
+
+                                    ?>
+
+                                </div>
+
+                                <div class="col-md-2">
+                                    <a href="<?php echo $postLink; ?>" class="btn btn-card">Check it out</a>
+                                    <a href="#" class="btn mt-3 btn-card">Check it out</a>
+
+                                </div>
                             </div>
-
-                            <div class="col-md-2">
-                                <a href="<?php echo $postLink; ?>" class="btn btn-card">Check it out</a>
-                                <a href="#" class="btn mt-3 btn-card">Check it out</a>
-
-                            </div>
-
-
-
-                    <?php }
-            }
-            if ($args['listing-type'] == 'blog') {
-                echo '</div>';
-            } ?>
                         </div>
                     </div>
-                    </div>
                 </section>
-        <?php echo '</div>';
+
+
+
+        <?php }
+        }
+        if ($args['listing-type'] == 'blog') {
+            echo '</div>';
+        } ?>
+
+<?php echo '</div>';
 
 
         wp_reset_postdata();
@@ -200,3 +237,4 @@ function load_more_ajax()
     }
     wp_die();
 }
+// }
