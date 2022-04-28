@@ -1,7 +1,5 @@
 <?php
 
-use Automattic\WooCommerce\Admin\API\Reports\Categories\Query;
-
 function popularSearchResults($atts)
 {
     global $wpdb;
@@ -11,12 +9,7 @@ function popularSearchResults($atts)
 
     ), $atts);
 
-
-
     $popular_results_redirect = $shortcodeArray['search_results_page'];
-
-
-
 
     $searchTerm = normalize_whitespace(strtolower($_GET['search']));
     $searchTermPlus = str_replace(' ', '+', preg_replace('/[^\da-z ]/i', '', strtolower($_GET['search'])));
