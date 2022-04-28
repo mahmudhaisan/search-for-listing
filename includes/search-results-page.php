@@ -112,8 +112,6 @@ function searchResult493($atts)
 
                 <?php } else {
 
-
-
                 ?>
 
 
@@ -132,7 +130,7 @@ function searchResult493($atts)
                                     <div class="col-md-5 px-3 align-items-center  middle-card">
                                         <div class="card-block px-3">
                                             <!-- <h4 class="card-title">Lorem ipsum dolor sit amet</h4> -->
-                                            <a class="card-title" href="<?php echo $postLink; ?>"> <?php the_title(); ?> </a>
+                                            <a class="card-title" href="<?php echo get_permalink($currentPostId); ?>"> <?php the_title(); ?> </a>
 
 
                                             <p class="card-text">
@@ -164,9 +162,7 @@ function searchResult493($atts)
                                     </div>
 
                                     <div class="col-md-2">
-                                        <a href="<?php echo $postLink; ?>" class="btn btn-card">Check it out</a>
-                                        <a href="#" class="btn mt-3 btn-card">Check it out</a>
-
+                                        <a href="<?php echo get_permalink($currentPostId); ?>" class="btn btn-card">Check it out</a>
                                     </div>
                                 </div>
                             </div>
@@ -313,7 +309,7 @@ function searchResult493($atts)
                                     <div class="col-md-5 px-3 align-items-center  middle-card">
                                         <div class="card-block px-3">
                                             <!-- <h4 class="card-title">Lorem ipsum dolor sit amet</h4> -->
-                                            <a class="card-title" href="<?php echo $postLink; ?>"> <?php the_title(); ?> </a>
+                                            <a class="card-title" href="<?php echo get_permalink($currentPostId); ?>"> <?php the_title(); ?> </a>
 
 
                                             <p class="card-text">
@@ -334,6 +330,8 @@ function searchResult493($atts)
                                                     echo $reviewCount . ' Reviews';
                                                 } ?>
                                             </span>
+
+                                            <div><a href="#" class="">Check it out</a></div>
                                         </div>
 
 
@@ -345,8 +343,7 @@ function searchResult493($atts)
                                     </div>
 
                                     <div class="col-md-2">
-                                        <a href="<?php echo $postLink; ?>" class="btn btn-card">Check it out</a>
-                                        <a href="#" class="btn mt-3 btn-card">Check it out</a>
+                                        <a href="<?php echo get_permalink($currentPostId); ?>" class="btn btn-card">Check it out</a>
 
                                     </div>
                                 </div>

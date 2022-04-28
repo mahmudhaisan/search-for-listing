@@ -27,7 +27,7 @@ function popularSearchResults($atts)
     // echo $searchLink;
 
     //select data from db by searchTerm
-    echo $searchTerm;
+    // echo $searchTerm;
 
     $checkDuplicates = $wpdb->get_results($wpdb->prepare(
         "SELECT * FROM `wp_popular_searches` WHERE search_term = '$searchTerm'"
