@@ -19,7 +19,8 @@ function bookmarkTable()
 
     $popularSearchDb = "CREATE TABLE " . $popularSearch . " (
         search_term varchar(255),
-        search_term_link varchar(255)
+        search_term_link varchar(255),
+        search_results_page varchar(255)
     );";
 
 
