@@ -11,7 +11,8 @@ function searchResult493($atts)
     $shortcodeArray = shortcode_atts(array(
         'result_page' => 'main',
         'posts_per_page' => 5,
-        'listing_type' => 'all'
+        'listing_type' => 'all',
+        'category_name' => 'all'
 
     ), $atts);
 
@@ -61,17 +62,25 @@ function searchResult493($atts)
             );
         }
 
+
+
+
+
+
+
+
         $new_query = new WP_Query($args);
+
+
+        var_dump($new_query);
         $currentPostId = $new_query->ID;
 
 
         if ($new_query->have_posts()) {
-
             //search results container start
             echo '<div class="ajax_loaded_posts row">';
             // echo '<div class="container">';
             while ($new_query->have_posts()) {
-
                 $meta = get_post_meta($currentPostId);
                 $new_query->the_post();
 
@@ -80,14 +89,30 @@ function searchResult493($atts)
                 $postLink = get_the_guid();
                 $defaultImg = 'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png';
                 $postImage = get_field('_job_cover', $new_query->ID);
+
                 $reviewCount = get_field('_case27_review_count', $currentPostId);
                 $averageRating = get_field('_case27_average_rating', $currentPostId) / 2;
                 $listingType = get_field('_case27_listing_type', $currentPostId);
 
-                $postContent = get_the_content();
+
+                // $postAlink = get_post_meta($currentPostId, '_affiliate-link');
+
+                $postAlink = get_post_meta($currentPostId, '_custom-field-8982');
+                $postContent = wp_strip_all_tags(get_the_content());
+                $sliceContent = mb_strimwidth($postContent, 0, 100, '...');
+
 
                 // $blogPostContent = the_content();
                 if ($shortcodeArray['listing_type'] == 'blog') {
+
+
+
+
+
+
+
+
+
 
 
 ?>
@@ -100,11 +125,10 @@ function searchResult493($atts)
                                                             } else {
                                                                 echo $defaultImg;
                                                             } ?>">
-                            <div class=" card-body d-flex flex-column">
+                            <div class="card-body flex-column">
                                 <a href="<?php echo $postLink; ?>" class="card-title"><?php the_title(); ?></a>
-                                <h3 class="card-text"><?php echo mb_strimwidth($postContent, 0, 100, '...'); ?></h3>
-                                <a class="mt-auto align-self-start" href="">Go somewhere</a>
-
+                                <h3 class="card-text"><?php echo $sliceContent; ?></h3>
+                                <a class="align-self-start" href="<?php echo $postLink; ?>">Go somewhere <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -151,6 +175,20 @@ function searchResult493($atts)
                                                     echo $reviewCount . ' Reviews';
                                                 } ?>
                                             </span>
+
+                                            <?php
+                                            if ($postAlink[0] != '') {
+
+                                            ?>
+                                                <div>
+                                                    <a href="<?php echo $postAlink[0]; ?>" class="affiliate_link">
+                                                        Check Affilate
+                                                    </a>
+                                                </div>
+
+                                            <?php } ?>
+
+
                                         </div>
 
 
@@ -200,10 +238,6 @@ function searchResult493($atts)
 
 
 
-
-
-
-
     if ($_GET['search'] == '') {
         $paged = get_query_var('paged') ? get_query_var('paged') : 1;
 
@@ -238,7 +272,23 @@ function searchResult493($atts)
             );
         }
 
+
+        $get_cat_query_var =  $_GET['category'];
+
+
+
+        if ($get_cat_query_var) {
+            $args = array(
+                "post_type" => "post",
+                'posts_per_page' => $totalPostsToShow,
+                "paged" => $paged,
+                'category_name' => $get_cat_query_var,
+            );
+        }
+
+
         $new_query = new WP_Query($args);
+
         $currentPostId = $new_query->ID;
 
 
@@ -261,10 +311,19 @@ function searchResult493($atts)
                 $averageRating = get_field('_case27_average_rating', $currentPostId) / 2;
                 $listingType = get_field('_case27_listing_type', $currentPostId);
 
-                $postContent = get_the_content();
+                $postContent = wp_strip_all_tags(get_the_content());
 
+
+                // $postAlink = get_post_meta($currentPostId, '_affiliate-link');
+
+                $postAlink = get_post_meta($currentPostId, '_custom-field-8982');
+
+                $sliceContent = mb_strimwidth($postContent, 0, 100, '...');
                 // $blogPostContent = the_content();
                 if ($shortcodeArray['listing_type'] == 'blog') {
+                    // print_r($sliceContent);
+
+
 
 
             ?>
@@ -277,11 +336,10 @@ function searchResult493($atts)
                                                             } else {
                                                                 echo $defaultImg;
                                                             } ?>">
-                            <div class=" card-body d-flex flex-column">
+                            <div class="card-body flex-column">
                                 <a href="<?php echo $postLink; ?>" class="card-title"><?php the_title(); ?></a>
-                                <h3 class="card-text"><?php echo mb_strimwidth($postContent, 0, 100, '...'); ?></h3>
-                                <a class="mt-auto align-self-start" href="">Go somewhere</a>
-
+                                <h3 class="card-text"><?php echo $sliceContent; ?></h3>
+                                <a class="align-self-start" href="<?php echo $postLink; ?>">Go somewhere <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -330,8 +388,18 @@ function searchResult493($atts)
                                                     echo $reviewCount . ' Reviews';
                                                 } ?>
                                             </span>
+                                            <?php
+                                            if ($postAlink[0] != '') {
 
-                                            <div><a href="#" class="">Check it out</a></div>
+                                            ?>
+                                                <div>
+                                                    <a href="<?php echo $postAlink[0]; ?>" class="affiliate_link">
+                                                        Check Affilate
+                                                    </a>
+                                                </div>
+
+                                            <?php } ?>
+
                                         </div>
 
 
@@ -363,7 +431,7 @@ function searchResult493($atts)
 
 
         if ($new_query->max_num_pages > 1) { ?>
-            <div class="posts_loadmore" show-posts="<?php echo $totalPostsToShow; ?>" data-id="<?php echo $shortcodeArray['listing_type']; ?>">More posts</div>
+            <div class="posts_loadmore" cat-vars="<?php echo $get_cat_query_var ?>" show-posts="<?php echo $totalPostsToShow; ?>" data-id="<?php echo $shortcodeArray['listing_type']; ?>">More posts</div>
             <div class="no-posts"></div>
 
 <?php  }

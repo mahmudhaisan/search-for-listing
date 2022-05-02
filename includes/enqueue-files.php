@@ -6,6 +6,7 @@ function search493_enqueue()
 {
     // global PLUGINS_PATH_ASSETS;
     global $new_query;
+    global $get_cat_query_var;
 
 
 
@@ -30,8 +31,8 @@ function search493_enqueue()
             'current_page' => get_query_var('paged') ? get_query_var('paged') : 1,
             'max_pages' => $new_query->max_num_pages,
             'search_term' => $search,
-            'site_url' => site_url()
-
+            'site_url' => site_url(),
+            'get_cat_query_var' => $get_cat_query_var
         )
     );
 }

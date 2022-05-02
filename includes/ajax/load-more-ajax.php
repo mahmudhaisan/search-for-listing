@@ -14,7 +14,8 @@ function load_more_ajax()
     $args['search_term'] = $_POST['search_term']; // we need next page to be loaded
     $args['listing-type'] = $_POST['listing_type'];
     $args['show-posts'] = $_POST['posts_to_show'];
-
+    $args['cat_query'] = $_POST['cat_query'];
+    // echo $args['cat_query'];
 
     $args1 = array();
 
@@ -75,8 +76,19 @@ function load_more_ajax()
         );
     }
 
+    if ($args['cat_query']) {
+        $args1 = array(
+            "post_type" => "post",
+            'posts_per_page' => $args['show-posts'],
+            "paged" => $args['paged'],
+            'category_name' => $args['cat_query'],
+        );
+    }
+
+
 
     $loop = new WP_Query($args1);
+
 
 
     // if ($args['listing-type'] == 'blog') {
@@ -131,11 +143,22 @@ function load_more_ajax()
             $total_likes = $like_count_query;
 
 
-            $postContent = get_the_content();
+            $postAlink = get_post_meta($currentPostId, '_affiliate-link');
+
+            // $postAlink = get_post_meta($currentPostId, '_affiliate-link');
+
+            $postAlink = get_post_meta($currentPostId, '_custom-field-8982');
+
+
+
+
+
+            $postContent = wp_strip_all_tags(get_the_content());
 
             // $blogPostContent = the_content();
             if ($args['listing-type'] == 'blog') {
-
+                // $postContent = wp_strip_all_tags(get_the_content());
+                $sliceContent = mb_strimwidth($postContent, 0, 100, '...');
 
         ?>
 
@@ -148,16 +171,19 @@ function load_more_ajax()
                                                         } else {
                                                             echo $defaultImg;
                                                         } ?>">
-                        <div class=" card-body flex-column">
+                        <div class="card-body flex-column">
                             <a href="<?php echo $postLink; ?>" class="card-title"><?php the_title(); ?></a>
-                            <h3 class="card-text"><?php echo mb_strimwidth($postContent, 0, 100, '...'); ?></h3>
-                            <a class="mt-auto align-self-start" href="">Go somewhere</a>
-
+                            <h3 class="card-text"><?php echo $sliceContent; ?></h3>
+                            <a class="align-self-start" href="<?php echo $postLink; ?>">Go somewhere <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
 
-            <?php } else { ?>
+            <?php } else {
+
+
+
+            ?>
 
                 <section class="card-section">
                     <div class="container card-container py-3">
@@ -199,6 +225,19 @@ function load_more_ajax()
                                                 echo $reviewCount . ' Reviews';
                                             } ?>
                                         </span>
+
+                                        <?php
+                                        if ($postAlink[0] != '') {
+
+                                        ?>
+                                            <div>
+                                                <a href="<?php echo $postAlink[0]; ?>" class="affiliate_link">
+                                                    Check Affilate
+                                                </a>
+                                            </div>
+
+                                        <?php } ?>
+
                                     </div>
 
 

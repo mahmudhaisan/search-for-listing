@@ -75,6 +75,7 @@ jQuery(document).ready(function($) {
         $load_more = $(this);
         var listing_type = $(this).attr("data-id");
         var show_posts = $(this).attr("show-posts");
+        var cat_vars = $(this).attr("cat-vars");
         $.ajax({
             url: bookmark_ajax_script.ajaxurl,
 
@@ -84,6 +85,7 @@ jQuery(document).ready(function($) {
                 'query': bookmark_ajax_script.posts_vars,
                 'page': bookmark_ajax_script.current_page,
                 'search_term': bookmark_ajax_script.search_term,
+                'cat_query': cat_vars,
                 'listing_type': listing_type,
                 'posts_to_show': show_posts,
 

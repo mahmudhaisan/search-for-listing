@@ -3,8 +3,8 @@
 /**
  * Plugin Name: Search For Listing
  * Plugin URI: http://mahmudhaisan.com/
- * Description: Search
- * Version: 1.2.0
+ * Description: This plugin is based on listing search functionality including custom post type , popular search tags etc
+ * Version: 2.0
  * Author: Mahmud haisan
  * Author URI: http://mahmudhaisan.com/
  * Developer: Mahmud Haisan
@@ -26,8 +26,8 @@ define("PLUGINS_PATH_ASSETS", plugin_dir_url(__FILE__) . 'assets/');
 
 
 require(plugin_dir_path(__FILE__) . 'includes/search-form.php');
-include(plugin_dir_path(__FILE__) . 'includes/search-results-page.php');
-include(plugin_dir_path(__FILE__) . 'includes/popular-searches.php');
+require(plugin_dir_path(__FILE__) . 'includes/search-results-page.php');
+require(plugin_dir_path(__FILE__) . 'includes/popular-searches.php');
 include(plugin_dir_path(__FILE__) . 'includes/ajax/like-ajax.php');
 include(plugin_dir_path(__FILE__) . 'includes/ajax/load-more-ajax.php');
 include(plugin_dir_path(__FILE__) . 'includes/ajax/share-modal.php');
